@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Screen Recorder</string>
+
+    <!--Admob Ads Id Setup-->
+    <string name="app_id">ca-app-pub-7593602752326571~9741880691</string>
+    <string name="banner_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_id">ca-app-pub-3940256099942544/1033173712</string>
+
+
+    <!--Top Menu Setup-->
+    <string name="Devloper_ID">deephost</string>
+    <string name="privacy_policy_url">http://samplestickerapp.com/privacy_policy</string>
+    <string name="Email">deephost9@gmail.com</string>
+    <string name="app_ver">v1.0</string>
+
+</resources>

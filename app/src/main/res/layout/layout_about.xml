@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center">
+
+<android.support.v7.widget.CardView
+    android:layout_width="270dp"
+    android:layout_height="300dp"
+    app:cardBackgroundColor="@color/colorPrimary"
+    app:cardCornerRadius="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/txtColor"
+        android:textSize="23dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:layout_marginTop="10dp"
+            android:textSize="18dp"
+            android:text="Current Version :  "/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:layout_marginTop="10dp"
+                android:textSize="18dp"
+                android:text="@string/app_ver"/>
+        </LinearLayout>
+
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
+        android:layout_marginTop="10dp"
+        android:textSize="18dp"
+        android:text="This app is Developed by Kamal Kishor Meena."/>
+
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
+        android:layout_marginTop="10dp"
+        android:textSize="18dp"
+        android:text="This Audio Recorder is based on simple UI and having all basic features for sound recording."/>
+
+
+    </LinearLayout>
+
+       <Button
+        android:id="@+id/dissmiss"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DISSMISS"
+        android:textSize="15dp"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="32dp"
+        android:background="@color/btnColor"
+        android:layout_gravity="bottom"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        />
+
+</android.support.v7.widget.CardView>
+
+</RelativeLayout>
