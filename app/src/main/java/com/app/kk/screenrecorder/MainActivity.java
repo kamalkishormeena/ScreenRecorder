@@ -369,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
 
             return;
         }else {
-            string1 = "Stop Recording";
+            string1 = "t";
             fav.setImageResource(R.drawable.ic_clear);
             notification();
             activityStart();
