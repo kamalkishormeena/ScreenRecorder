@@ -1,6 +1,7 @@
 package com.app.kk.screenrecorder;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,7 +18,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -67,13 +70,13 @@ public class Adapter extends ArrayAdapter<Item> {
                             case R.id.item_delete:
 
 
-                                bdd(position);
+                                delDialog(position);
 
                                 return true;
 
                             case R.id.item_share:
 
-                                bss(position);
+                                shareIntent(position);
 
                                 return true;
 
@@ -128,7 +131,7 @@ public class Adapter extends ArrayAdapter<Item> {
     }
 
 
-    private void bss(final  int position) {
+    private void shareIntent(final  int position) {
         File file = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/"+ listString.get(position));
         Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
         Intent shareIntent = new Intent();
@@ -140,8 +143,8 @@ public class Adapter extends ArrayAdapter<Item> {
         context.startActivity(Intent.createChooser(shareIntent, "Share with"));
     }
 
-    private void bdd(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    private void deleteDialog(final int position) {
+       AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Confirm Delete ?");
         builder.setMessage("Are you sure you want delete this !");
 
@@ -164,6 +167,41 @@ public class Adapter extends ArrayAdapter<Item> {
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void delDialog(final int position){
+        final Dialog dialog = new Dialog(context);
+        View mylayout = LayoutInflater.from(context).inflate(R.layout.custom_delete_dialog, null);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(mylayout);
+
+        Button btnNo = (Button) dialog.findViewById(R.id.btnNo);
+        Button btnYes = (Button) dialog.findViewById(R.id.btnYes);
+
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                file = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/"+ listString.get(position));
+                file.delete();
+                list.remove(position);
+                notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        dialog.show();
+
     }
 
 }

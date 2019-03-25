@@ -62,7 +62,7 @@
         android:textColor="@color/textColor"
         android:layout_marginTop="10dp"
         android:textSize="18dp"
-        android:text="This Audio Recorder is based on simple UI and having all basic features for sound recording."/>
+        android:text="This Screen Recorder is based on simple UI and having all basic features for screen recording."/>
 
 
     </LinearLayout>

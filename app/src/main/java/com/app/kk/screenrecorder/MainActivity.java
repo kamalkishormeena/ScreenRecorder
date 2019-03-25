@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Screen Recoder App")
+                .setContentTitle("Screen Recorder")
                 .setContentText("Recoding")
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(false)
@@ -301,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .addAction(new Action(
                         R.drawable.ic_close,
-                        "t",
+                        "Stop Recording",
                         PendingIntent.getActivity(this, 0, yesIntent, PendingIntent.FLAG_UPDATE_CURRENT)));
         notificationManager.notify(notificationId, mBuilder.build());
     }
@@ -369,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
 
             return;
         }else {
-            string1 = "t";
+            string1 = "Stop Recording";
             fav.setImageResource(R.drawable.ic_clear);
             notification();
             activityStart();
