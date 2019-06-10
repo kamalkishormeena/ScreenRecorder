@@ -32,7 +32,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Random;
 
-import static com.app.kk.screenrecorder.MainActivity.listString;
+import static com.app.kk.screenrecorder.Activity.MainActivity.listString;
 
 public class Adapter extends ArrayAdapter<Item> {
     

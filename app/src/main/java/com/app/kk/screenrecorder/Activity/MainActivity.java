@@ -1,4 +1,4 @@
-package com.app.kk.screenrecorder;
+package com.app.kk.screenrecorder.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -57,6 +57,9 @@ import android.support.v4.app.NotificationCompat.Action;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 
+import com.app.kk.screenrecorder.Adapter;
+import com.app.kk.screenrecorder.Item;
+import com.app.kk.screenrecorder.R;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
