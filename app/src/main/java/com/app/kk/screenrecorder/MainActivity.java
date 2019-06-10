@@ -38,7 +38,6 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import java.io.File;
@@ -92,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
     private NotificationManager notificationManager;
     private Toolbar toolbar;
 
+    private ViewGroup containerView;
+
 
 
     static {
@@ -110,12 +111,14 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
+        containerView =(ViewGroup) findViewById(R.id.containerView);
 
         arraylist = new ArrayList<>();
         listview = (ListView) findViewById(R.id.listView1);
         View emptyView = getLayoutInflater().inflate(R.layout.empty,null);
         ((ViewGroup)listview.getParent()).addView(emptyView);
         listview.setEmptyView(emptyView);
+
         fav = (FloatingActionButton) findViewById(R.id.fav);
         string1 = "s";
         //creating the adapter
@@ -199,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
         string = formatter.format(now);
     }
     @SuppressLint("DefaultLocale")
-    public static String fdfdfbg(long seconds) {
+    public static String timeFormat(long seconds) {
         return String.format("%02d:%02d:%02d",
                 TimeUnit.MILLISECONDS.toHours(seconds),
                 TimeUnit.MILLISECONDS.toMinutes(seconds) -
@@ -243,9 +246,9 @@ public class MainActivity extends AppCompatActivity {
                 String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                 aLong = Long.parseLong(time );
             }
-            arraylist.add(new Item("video.png", list[i].getName(), ""+fdfdfbg(aLong),"Size : "+ fileSize(length)));
+            arraylist.add(new Item("video.png", list[i].getName(), ""+ timeFormat(aLong),"Size : "+ fileSize(length)));
 
-            Adapter adapter = new Adapter(this, R.layout.custom_listview, arraylist);
+            final Adapter adapter = new Adapter(this, R.layout.custom_listview, arraylist);
             //attaching adapter to the listview
             listview.setAdapter(adapter);
         }
@@ -266,14 +269,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    private Intent fflvv() {
+    private Intent intentFlag() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return intent;
     }
 
     public void notification() {
-        Intent yesIntent = fflvv();
+        Intent yesIntent = intentFlag();
         yesIntent.setAction(YES_ACTION);
         notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationId = 1;
@@ -324,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    
+
     public void checkPermission(){
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) + ContextCompat
@@ -350,6 +353,8 @@ public class MainActivity extends AppCompatActivity {
     public void stopRecording(){
         mediaRecorder.stop();
         mediaRecorder.reset();
+        Toast.makeText(this, "File save in Your phone storage"+ file+ string+ ".mp4" ,
+                Toast.LENGTH_LONG).show();
         Log.v(TAG, "Stopping Recording");
         stopCheck();
     }
@@ -514,6 +519,9 @@ public class MainActivity extends AppCompatActivity {
                 aboutDialog();
                 return true;
 
+            case R.id.settings:
+                Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                MainActivity.this.startActivity(myIntent);
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -537,4 +545,6 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
 
     }
+
+
 }

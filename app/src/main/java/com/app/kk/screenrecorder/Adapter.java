@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +54,7 @@ public class Adapter extends ArrayAdapter<Item> {
         TextView ab = view.findViewById(R.id.vidTitle);
         TextView ac = view.findViewById(R.id.vidDuration);
         TextView ad = view.findViewById(R.id.vidSize);
+
         CardView cardView = view.findViewById(R.id.cardView);
         //cardView.setCardBackgroundColor(getRandom());
 
@@ -80,6 +82,15 @@ public class Adapter extends ArrayAdapter<Item> {
 
                                 return true;
 
+                            case R.id.item_play:
+                                playVid(position);
+
+                                return true;
+
+                            case R.id.item_rename:
+                                Rename();
+
+                                return true;
                         }
 
                         popupMenu.dismiss();
@@ -128,6 +139,18 @@ public class Adapter extends ArrayAdapter<Item> {
 
         return Color.argb(255, random.nextInt(256), random.nextInt(256),  random.nextInt(256));
 
+    }
+
+
+    private void Rename(){
+        Toast.makeText(context, "Coming Soon", Toast.LENGTH_LONG).show();
+    }
+
+    private void playVid(final int position){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/Screen Recording/"+ listString.get(position));
+        intent.setDataAndType(uri, "video/*");
+        context.startActivity(intent);
     }
 
 
@@ -191,6 +214,8 @@ public class Adapter extends ArrayAdapter<Item> {
             public void onClick(View v) {
                 file = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/"+ listString.get(position));
                 file.delete();
+                Toast.makeText(context, "Video deleted successfully",
+                        Toast.LENGTH_LONG).show();
                 list.remove(position);
                 notifyDataSetChanged();
                 dialog.dismiss();

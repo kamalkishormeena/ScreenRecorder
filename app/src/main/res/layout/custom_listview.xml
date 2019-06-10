@@ -2,9 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
     android:background="@color/bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,6 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="10dp"
+        android:layout_marginTop="-2dp"
+        card_view:cardElevation="4dp"
+        card_view:cardUseCompatPadding="true"
+        android:stateListAnimator="@anim/list_anim"
         >
 
         <LinearLayout
@@ -22,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/cardbg"
+            android:foreground="@drawable/accent_ripple"
             >
 
         <LinearLayout
@@ -49,7 +53,7 @@
 
                 <TextView
                     android:id="@+id/vidTitle"
-                    android:textColor="#000"
+                    android:textColor="@color/white"
                     android:textSize="16dp"
                     android:text="Tittle"
                     android:layout_width="match_parent"
@@ -68,6 +72,7 @@
                         android:id="@+id/vidDuration"
                         android:layout_weight="1.0"
                         android:textSize="16dp"
+                        android:textColor="@color/textColor_trans"
                         android:text="Duration : 00:00:02"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -76,6 +81,7 @@
                         android:id="@+id/vidSize"
                         android:layout_weight="1.0"
                         android:textSize="16dp"
+                        android:textColor="@color/textColor_trans"
                         android:text="Size : 100MB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -91,16 +97,16 @@
         </LinearLayout>
 
         <LinearLayout
-            android:padding="5dp"
-            android:gravity="right"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:padding="5dp">
 
             <ImageView
                 android:id="@+id/itemMenu"
-                android:src="@drawable/ic_more_vert_black_24dp"
                 android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:src="@drawable/ic_more_vert" />
 
         </LinearLayout>
 
