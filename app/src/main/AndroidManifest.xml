@@ -20,7 +20,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".Activity.SettingsActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".Activity.MainActivity"></activity>
+            android:parentActivityName=".Activity.MainActivity" />
         <activity
             android:name=".Activity.MainActivity"
             android:screenOrientation="portrait">
@@ -30,6 +30,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".Activity.RecordingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ControlsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.QualityActivity"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
