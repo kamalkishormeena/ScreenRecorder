@@ -23,6 +23,8 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -38,8 +40,10 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -50,6 +54,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -58,6 +63,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 
 import com.app.kk.screenrecorder.Adapter;
+import com.app.kk.screenrecorder.CustomAdapter;
 import com.app.kk.screenrecorder.Item;
 import com.app.kk.screenrecorder.R;
 import com.gun0912.tedpermission.PermissionListener;
@@ -80,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     private MediaRecorder mediaRecorder;
     private static final SparseIntArray sArray = new SparseIntArray();
     private static final int crp = 10;
+    private RecyclerView recyclerView;
 
     String string;
     List<Item> arraylist;
@@ -97,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
     private ViewGroup containerView;
 
 
-
     static {
         sArray.append(Surface.ROTATION_0, 90);
         sArray.append(Surface.ROTATION_90, 0);
@@ -105,66 +111,12 @@ public class MainActivity extends AppCompatActivity {
         sArray.append(Surface.ROTATION_270, 180);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-
-        containerView =(ViewGroup) findViewById(R.id.containerView);
-
-        arraylist = new ArrayList<>();
-        listview = (ListView) findViewById(R.id.listView1);
-        View emptyView = getLayoutInflater().inflate(R.layout.empty,null);
-        ((ViewGroup)listview.getParent()).addView(emptyView);
-        listview.setEmptyView(emptyView);
-
-        fav = (FloatingActionButton) findViewById(R.id.fav);
-        string1 = "s";
-        //creating the adapter
-        Adapter adapter = new Adapter(this, R.layout.custom_listview, arraylist);
-        File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Screen Recording");
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-            }
-        }
-        permissions();
-        Display display = ((WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        width = display.getWidth();
-        height = display.getHeight();
-        fav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (string1.equals("s")){
-                    checkPermission();
-                } else if (string1.equals("t")){
-                    notificationManager.cancel(1);
-                    string1 = "s";
-                    fav.setImageResource(R.drawable.ic_recode);
-                    stopRecording();
-                    filePath();
-                }
-            }
-        });
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        cms = metrics.densityDpi;
-        width = metrics.widthPixels;
-        Resources resources = getResources();
-        int id = resources.getIdentifier("config_showNavigationBar", "bool", "android");
-        if(id>0) {
-            height = metrics.heightPixels + getNavigationBarHeight();
-        } else {
-            height = metrics.heightPixels;
-        }
-        mediaRecorder = new MediaRecorder();
-        mediaPM = (MediaProjectionManager) getSystemService
-                (Context.MEDIA_PROJECTION_SERVICE);
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        StartRecording(getIntent());
+    public static String fileSize(long size) {
+        if (size <= 0)
+            return "0";
+        final String[] units = new String[]{"Adapter", "KB", "MB", "GB", "TB"};
+        int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
+        return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }
 
     private int getNavigationBarHeight() {
@@ -182,12 +134,73 @@ public class MainActivity extends AppCompatActivity {
         return 0;
     }
 
-    private void permissions(){
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO)
-                .check();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
+        containerView = (ViewGroup) findViewById(R.id.containerView);
+//        recyclerView = findViewById(R.id.listView2);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//
+//        recyclerView.setLayoutManager(linearLayoutManager);
+
+        arraylist = new ArrayList<>();
+        listview = (ListView) findViewById(R.id.listView1);
+        View emptyView = getLayoutInflater().inflate(R.layout.empty, null);
+        ((ViewGroup) listview.getParent()).addView(emptyView);
+        listview.setEmptyView(emptyView);
+
+        fav = (FloatingActionButton) findViewById(R.id.fav);
+        string1 = "s";
+        //creating the adapter
+        Adapter adapter = new Adapter(this, R.layout.custom_listview, arraylist);
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Screen Recording");
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+            }
+        }
+        permissions();
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        width = display.getWidth();
+        height = display.getHeight();
+        fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (string1.equals("s")) {
+                    checkPermission();
+                } else if (string1.equals("t")) {
+                    notificationManager.cancel(1);
+                    string1 = "s";
+                    fav.setImageResource(R.drawable.ic_recode);
+                    stopRecording();
+                    filePath();
+                }
+            }
+        });
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        cms = metrics.densityDpi;
+        width = metrics.widthPixels;
+        Resources resources = getResources();
+        int id = resources.getIdentifier("config_showNavigationBar", "bool", "android");
+        if (id > 0) {
+            height = metrics.heightPixels + getNavigationBarHeight();
+        } else {
+            height = metrics.heightPixels;
+        }
+        mediaRecorder = new MediaRecorder();
+        mediaPM = (MediaProjectionManager) getSystemService
+                (Context.MEDIA_PROJECTION_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        StartRecording(getIntent());
     }
+
     PermissionListener permissionlistener = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
@@ -199,11 +212,14 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
         }
     };
-    public void format(){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.US);
-        Date now = new Date();
-        string = formatter.format(now);
+
+    private void permissions() {
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
+                .check();
     }
+
     @SuppressLint("DefaultLocale")
     public static String timeFormat(long seconds) {
         return String.format("%02d:%02d:%02d",
@@ -213,14 +229,14 @@ public class MainActivity extends AppCompatActivity {
                 TimeUnit.MILLISECONDS.toSeconds(seconds) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(seconds)));
     }
-    public static String fileSize(long size) {
-        if (size <= 0)
-            return "0";
-        final String[] units = new String[] { "Adapter", "KB", "MB", "GB", "TB" };
-        int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
-        return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+
+    public void format() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.US);
+        Date now = new Date();
+        string = formatter.format(now);
     }
-    public void filePath(){
+
+    public void filePath() {
         arraylist.clear();
         listString = new ArrayList<String>();
         File directory = Environment.getExternalStorageDirectory();
@@ -237,19 +253,19 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < list.length; i++) {
             listString.add(list[i].getName());
-            String filepath = Environment.getExternalStorageDirectory() + "/Screen Recording/"+list[i].getName();
+            String filepath = Environment.getExternalStorageDirectory() + "/Screen Recording/" + list[i].getName();
             File file = new File(filepath);
             long length = file.length();
-            if (length < 1024){
-                file1 = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/"+list[i].getName());
+            if (length < 1024) {
+                file1 = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/" + list[i].getName());
                 file1.delete();
             } else {
                 MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                retriever.setDataSource(getApplicationContext(), Uri.parse(Environment.getExternalStorageDirectory() + "/Screen Recording/"+list[i].getName()));
+                retriever.setDataSource(getApplicationContext(), Uri.parse(Environment.getExternalStorageDirectory() + "/Screen Recording/" + list[i].getName()));
                 String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-                aLong = Long.parseLong(time );
+                aLong = Long.parseLong(time);
             }
-            arraylist.add(new Item("video.png", list[i].getName(), ""+ timeFormat(aLong),"Size : "+ fileSize(length)));
+            arraylist.add(new Item("video.png", list[i].getName(), "" + timeFormat(aLong), "Size : " + fileSize(length)));
 
             final Adapter adapter = new Adapter(this, R.layout.custom_listview, arraylist);
             //attaching adapter to the listview
@@ -258,13 +274,11 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, listString);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
-            {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/Screen Recording/"+ listString.get(position));
+                Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
                 intent.setDataAndType(uri, "video/*");
                 startActivity(intent);
             }
@@ -272,6 +286,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
     private Intent intentFlag() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -317,6 +332,7 @@ public class MainActivity extends AppCompatActivity {
         StartRecording(intent);
         super.onNewIntent(intent);
     }
+
     private void StartRecording(Intent intent) {
         if (intent.getAction() != null) {
             switch (intent.getAction()) {
@@ -331,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void checkPermission(){
+    public void checkPermission() {
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) + ContextCompat
                 .checkSelfPermission(MainActivity.this,
@@ -353,10 +369,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void stopRecording(){
+    public void stopRecording() {
         mediaRecorder.stop();
         mediaRecorder.reset();
-        Toast.makeText(this, "File save in Your phone storage"+ file+ string+ ".mp4" ,
+        Toast.makeText(this, "File save in Your phone storage" + file + string + ".mp4",
                 Toast.LENGTH_LONG).show();
         Log.v(TAG, "Stopping Recording");
         stopCheck();
@@ -376,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
             fav.setImageResource(R.drawable.ic_recode);
 
             return;
-        }else {
+        } else {
             string1 = "t";
             fav.setImageResource(R.drawable.ic_clear);
             notification();
@@ -389,6 +405,7 @@ public class MainActivity extends AppCompatActivity {
         virtualDisplay = createVirtualDisplay();
         mediaRecorder.start();
     }
+
     public void activityStart() {
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
@@ -422,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            mediaRecorder.setOutputFile(Environment.getExternalStorageDirectory()+"/Screen Recording" + "/Screen Recording "+ string +".mp4");
+            mediaRecorder.setOutputFile(Environment.getExternalStorageDirectory() + "/Screen Recording" + "/Screen Recording " + string + ".mp4");
             mediaRecorder.setVideoSize(width, height);
             mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
@@ -437,7 +454,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 
 
     private class MediaProjectionCallback extends MediaProjection.Callback {
@@ -501,23 +517,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.share ){
+        if (item.getItemId() == R.id.share) {
 
             try {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-                String sAux = "\n "+getString(R.string.app_name)+" - Download Now\n\n";
-                sAux = sAux + "https://play.google.com/store/apps/details?id="+getPackageName()+" \n\n";
+                String sAux = "\n " + getString(R.string.app_name) + " - Download Now\n\n";
+                sAux = sAux + "https://play.google.com/store/apps/details?id=" + getPackageName() + " \n\n";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "choose one"));
-            } catch(Exception e) {
+            } catch (Exception e) {
 
             }
         }
 
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.about:
                 aboutDialog();
                 return true;
@@ -530,7 +545,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void aboutDialog(){
+    public void aboutDialog() {
         final Dialog dialog = new Dialog(MainActivity.this);
         View mylayout = LayoutInflater.from(this).inflate(R.layout.layout_about, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

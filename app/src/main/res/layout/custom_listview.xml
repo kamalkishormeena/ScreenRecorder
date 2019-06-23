@@ -37,7 +37,7 @@
 
             <ImageView
                 android:src="@drawable/ic_play_circle_outline_black_24dp"
-                android:id="@+id/itemIcon"
+                android:id="@+id/vidImage"
                 android:layout_gravity="center"
                 android:layout_width="50dp"
                 android:layout_height="50dp" />
@@ -55,7 +55,7 @@
                     android:id="@+id/vidTitle"
                     android:textColor="@color/white"
                     android:textSize="16dp"
-                    android:text="Tittle"
+                    android:text="Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

@@ -51,9 +51,9 @@ public class Adapter extends ArrayAdapter<Item> {
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(br, null, false);
-        TextView ab = view.findViewById(R.id.vidTitle);
-        TextView ac = view.findViewById(R.id.vidDuration);
-        TextView ad = view.findViewById(R.id.vidSize);
+        TextView title = view.findViewById(R.id.vidTitle);
+        TextView duration = view.findViewById(R.id.vidDuration);
+        TextView size = view.findViewById(R.id.vidSize);
 
         CardView cardView = view.findViewById(R.id.cardView);
         //cardView.setCardBackgroundColor(getRandom());
@@ -111,11 +111,11 @@ public class Adapter extends ArrayAdapter<Item> {
         AssetManager assetManager = context.getAssets();
 
         try {
-            InputStream inputStream = assetManager.open(A.getaa());
+            InputStream inputStream = assetManager.open(A.getVidImage());
 
             Drawable drawable = Drawable.createFromStream(inputStream,"");
 
-            ImageView imageView = (ImageView) view.findViewById(R.id.itemIcon);
+            ImageView imageView = (ImageView) view.findViewById(R.id.vidImage);
 
             imageView.setImageDrawable(drawable);
 
@@ -124,9 +124,9 @@ public class Adapter extends ArrayAdapter<Item> {
         }
 
 
-        ab.setText(A.getab());
-        ac.setText(A.getac());
-        ad.setText(A.getad());
+        title.setText(A.getVidTitle());
+        duration.setText(A.getVidDuration());
+        size.setText(A.getVidSize());
 
 
 

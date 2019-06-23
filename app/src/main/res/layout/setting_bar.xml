@@ -8,15 +8,5 @@
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     android:layout_marginBottom="20dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        android:textSize="25dp"
-        android:textColor="@color/txtColor"
-        android:layout_gravity="left"
-        android:id="@+id/toolbar_title"
-        android:textStyle="bold"
-        />
 
 </android.support.v7.widget.Toolbar>
