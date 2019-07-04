@@ -1,24 +1,47 @@
 package com.app.kk.screenrecorder;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.kk.screenrecorder.Activity.MainActivity;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+
+import static com.app.kk.screenrecorder.Activity.MainActivity.listString;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder> {
 
-    private List<Item> itemList;
+    List<Item> arraylist;
+    Context context;
+    File file;
 
-    public CustomAdapter(MainActivity mainActivity, int custom_listview, List<Item> itemList) {
-        this.itemList = itemList;
+    public CustomAdapter(Context context, int cusstom_layout, List<Item> arraylist) {
+        this.arraylist = arraylist;
+        this.context = context;
     }
+
 
 
     @NonNull
@@ -29,27 +52,142 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Viewholder viewholder, int position) {
-        String image = itemList.get(position).getVidImage();
-        String title = itemList.get(position).getVidTitle();
-        String duration = itemList.get(position).getVidDuration();
-        String size = itemList.get(position).getVidSize();
+    public void onBindViewHolder(@NonNull final Viewholder viewholder, final int position) {
+        String image = arraylist.get(position).getVidImage();
+        String title = arraylist.get(position).getVidTitle();
+        String duration = arraylist.get(position).getVidDuration();
+        String size = arraylist.get(position).getVidSize();
 
-        viewholder.setData(image, title, duration, size);
+        viewholder.setData(title, duration, size);
+
+        viewholder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
+                intent.setDataAndType(uri, "video/*");
+                context.startActivity(intent);
+
+
+            }
+        });
+
+        viewholder.menuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final PopupMenu popupMenu = new PopupMenu(v.getContext(), viewholder.menuBtn);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.item_delete:
+
+
+                                delDialog(position);
+
+                                return true;
+
+                            case R.id.item_share:
+
+                                shareIntent(position);
+
+                                return true;
+
+                            case R.id.item_play:
+                                playVid(position);
+
+                                return true;
+
+                            case R.id.item_rename:
+                                Rename();
+
+                                return true;
+                        }
+                        popupMenu.dismiss();
+
+                        return true;
+                    }
+                });
+
+                popupMenu.show();
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() {
-        return itemList.size();
+        return arraylist.size();
+    }
+
+    private void Rename() {
+        Toast.makeText(context, "Coming Soon", Toast.LENGTH_LONG).show();
+    }
+
+    private void playVid(final int position) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
+        intent.setDataAndType(uri, "video/*");
+        context.startActivity(intent);
+    }
+
+    private void shareIntent(final int position) {
+        File file = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
+        Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("video/*");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, listString.get(position));
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        context.startActivity(Intent.createChooser(shareIntent, "Share with"));
+    }
+
+    public void delDialog(final int position) {
+        final Dialog dialog = new Dialog(context);
+        View mylayout = LayoutInflater.from(context).inflate(R.layout.custom_delete_dialog, null);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(mylayout);
+
+        Button btnNo = (Button) dialog.findViewById(R.id.btnNo);
+        Button btnYes = (Button) dialog.findViewById(R.id.btnYes);
+
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                file = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
+                file.delete();
+                Toast.makeText(context, "Video deleted successfully",
+                        Toast.LENGTH_LONG).show();
+                arraylist.remove(position);
+                notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        dialog.show();
+
     }
 
     class Viewholder extends RecyclerView.ViewHolder {
 
-        private TextView vidImage;
+        public ImageView menuBtn;
         private TextView title;
         private TextView duration;
         private TextView size;
+        private ImageView vidImage;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
@@ -58,10 +196,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
             title = itemView.findViewById(R.id.vidTitle);
             duration = itemView.findViewById(R.id.vidDuration);
             size = itemView.findViewById(R.id.vidSize);
+            menuBtn = (ImageView) itemView.findViewById(R.id.itemMenu);
+
         }
 
-        private void setData(String image, String titletext, String time, String siz) {
-            vidImage.setText(image);
+        public void setData(String titletext, String time, String siz) {
             title.setText(titletext);
             duration.setText(time);
             size.setText(siz);

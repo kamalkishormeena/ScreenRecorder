@@ -103,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewGroup containerView;
 
+    CustomAdapter adapter1;
+
 
     static {
         sArray.append(Surface.ROTATION_0, 90);
@@ -144,21 +146,23 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         containerView = (ViewGroup) findViewById(R.id.containerView);
-//        recyclerView = findViewById(R.id.listView2);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//
-//        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView = findViewById(R.id.listView2);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
 
         arraylist = new ArrayList<>();
-        listview = (ListView) findViewById(R.id.listView1);
-        View emptyView = getLayoutInflater().inflate(R.layout.empty, null);
-        ((ViewGroup) listview.getParent()).addView(emptyView);
-        listview.setEmptyView(emptyView);
+//        listview = (ListView) findViewById(R.id.listView1);
+//        View emptyView = getLayoutInflater().inflate(R.layout.empty, null);
+//        ((ViewGroup) listview.getParent()).addView(emptyView);
+//        listview.setEmptyView(emptyView);
+
 
         fav = (FloatingActionButton) findViewById(R.id.fav);
         string1 = "s";
         //creating the adapter
+        adapter1 = new CustomAdapter(this, R.layout.custom_listview, arraylist);
         Adapter adapter = new Adapter(this, R.layout.custom_listview, arraylist);
         File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Screen Recording");
         if (!mediaStorageDir.exists()) {
@@ -267,22 +271,26 @@ public class MainActivity extends AppCompatActivity {
             }
             arraylist.add(new Item("video.png", list[i].getName(), "" + timeFormat(aLong), "Size : " + fileSize(length)));
 
+            adapter1 = new CustomAdapter(this, R.layout.custom_listview, arraylist);
             final Adapter adapter = new Adapter(this, R.layout.custom_listview, arraylist);
             //attaching adapter to the listview
-            listview.setAdapter(adapter);
+//            listview.setAdapter(adapter);
+            recyclerView.setAdapter(adapter1);
+            adapter1.notifyDataSetChanged();
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, listString);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
-                intent.setDataAndType(uri, "video/*");
-                startActivity(intent);
-            }
-        });
+//        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
+//                intent.setDataAndType(uri, "video/*");
+//                startActivity(intent);
+//            }
+//        });
+
 
 
     }
@@ -376,6 +384,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
         Log.v(TAG, "Stopping Recording");
         stopCheck();
+        adapter1.notifyDataSetChanged();
     }
 
     @Override

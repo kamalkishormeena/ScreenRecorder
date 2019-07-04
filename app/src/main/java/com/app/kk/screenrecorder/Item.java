@@ -1,7 +1,10 @@
 package com.app.kk.screenrecorder;
 
+import android.widget.ImageView;
+
 public class Item {
-    public String vidImage, vidTitle, vidDuration, vidSize;
+    public String vidImage;
+    public String vidTitle, vidDuration, vidSize;
 
     public Item(String vidImage, String title, String duration, String size) {
         this.vidImage = vidImage;
