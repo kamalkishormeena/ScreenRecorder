@@ -1,4 +1,4 @@
-package com.app.kk.screenrecorder;
+package com.app.kk.screenrecorder.Adapter;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -25,6 +25,9 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.app.kk.screenrecorder.Model.Item;
+import com.app.kk.screenrecorder.R;
 
 import java.io.File;
 import java.io.IOException;

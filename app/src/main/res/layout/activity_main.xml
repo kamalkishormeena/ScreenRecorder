@@ -13,15 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <include layout="@layout/app_bar_main" />
 
-        <include layout="@layout/recyclerview_layout" />
+        <include
+            android:id="@+id/emptyView"
+            layout="@layout/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <include
+            layout="@layout/recyclerview_layout"
+            android:visibility="visible" />
 
     </LinearLayout>
 
-
     <include layout="@layout/fav_layout" />
-
-
 
 </android.support.design.widget.CoordinatorLayout>

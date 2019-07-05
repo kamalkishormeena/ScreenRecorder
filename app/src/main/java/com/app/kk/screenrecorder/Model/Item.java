@@ -1,4 +1,4 @@
-package com.app.kk.screenrecorder;
+package com.app.kk.screenrecorder.Model;
 
 import android.widget.ImageView;
 

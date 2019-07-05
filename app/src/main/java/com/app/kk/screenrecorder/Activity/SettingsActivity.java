@@ -32,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(SettingsActivity.this, QualityActivity.class);
-                SettingsActivity.this.startActivity(myIntent);
+                startActivity(myIntent);
             }
         });
 

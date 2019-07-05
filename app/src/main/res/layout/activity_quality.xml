@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include android:layout="@layout/setting_bar" />
+        <include layout="@layout/setting_bar" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 android:textColor="@color/color2"
                 android:textSize="25dp" />
 
-            <view
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="20dp"

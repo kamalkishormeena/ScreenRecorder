@@ -20,6 +20,5 @@ public class RecordingActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar2);
         toolbar.setTitle("Settings");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

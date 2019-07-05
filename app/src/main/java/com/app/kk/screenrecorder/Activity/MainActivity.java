@@ -37,7 +37,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -62,9 +61,9 @@ import android.support.v4.app.NotificationCompat.Action;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 
-import com.app.kk.screenrecorder.Adapter;
-import com.app.kk.screenrecorder.CustomAdapter;
-import com.app.kk.screenrecorder.Item;
+import com.app.kk.screenrecorder.Adapter.Adapter;
+import com.app.kk.screenrecorder.Adapter.CustomAdapter;
+import com.app.kk.screenrecorder.Model.Item;
 import com.app.kk.screenrecorder.R;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -101,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
     private NotificationManager notificationManager;
     private Toolbar toolbar;
 
+    LinearLayout emptyView;
     private ViewGroup containerView;
 
     CustomAdapter adapter1;
@@ -147,17 +147,16 @@ public class MainActivity extends AppCompatActivity {
 
         containerView = (ViewGroup) findViewById(R.id.containerView);
         recyclerView = findViewById(R.id.listView2);
+        emptyView = findViewById(R.id.emptyView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-
 
         arraylist = new ArrayList<>();
 //        listview = (ListView) findViewById(R.id.listView1);
 //        View emptyView = getLayoutInflater().inflate(R.layout.empty, null);
 //        ((ViewGroup) listview.getParent()).addView(emptyView);
 //        listview.setEmptyView(emptyView);
-
 
         fav = (FloatingActionButton) findViewById(R.id.fav);
         string1 = "s";
@@ -203,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 (Context.MEDIA_PROJECTION_SERVICE);
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         StartRecording(getIntent());
+
     }
 
     PermissionListener permissionlistener = new PermissionListener() {
@@ -277,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
 //            listview.setAdapter(adapter);
             recyclerView.setAdapter(adapter1);
             adapter1.notifyDataSetChanged();
+
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -333,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
                         "Stop Recording",
                         PendingIntent.getActivity(this, 0, yesIntent, PendingIntent.FLAG_UPDATE_CURRENT)));
         notificationManager.notify(notificationId, mBuilder.build());
+        //startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override
