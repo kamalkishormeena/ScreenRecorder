@@ -17,4 +17,11 @@
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
+
+    <style name="MyRadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textColor">@drawable/radio_button</item>
+        <item name="buttonTint">@drawable/radio_button</item>
+    </style>
+
+
 </resources>

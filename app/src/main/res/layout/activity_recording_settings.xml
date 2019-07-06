@@ -47,6 +47,7 @@
                     android:layout_height="wrap_content"
                     android:text="Record Audio"
                     android:textColor="@color/black"
+                    android:backgroundTint="@color/btnColor"
                     android:textSize="22dp" />
 
                 <TextView

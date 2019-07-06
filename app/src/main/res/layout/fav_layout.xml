@@ -22,7 +22,7 @@
             android:gravity="bottom|right"
             android:src="@drawable/ic_recode"
             android:visibility="visible"
-            app:backgroundTint="@color/btnColor"
+            app:backgroundTint="@color/favColor"
             app:layout_anchorGravity="right"
             android:focusable="true"
             android:elevation="5dp"

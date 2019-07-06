@@ -38,22 +38,48 @@
                 android:background="@android:color/darker_gray" />
 
             <LinearLayout
+                android:id="@+id/shake"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <Switch
+                    android:id="@+id/s1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Stop on Screen Off"
+                    android:backgroundTint="@color/btnColor"
+                    android:text="Start Recording on Shake"
                     android:textColor="@color/black"
                     android:textSize="22dp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="When your screen is turned off, any active screen recording will stop"
+                    android:text="When your shake your device screen recording automatically started."
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/screen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <Switch
+                    android:id="@+id/s2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Stop on Screen Off"
+                    android:textColor="@color/black"
+                    android:backgroundTint="@color/btnColor"
                     android:textSize="22dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="When your screen is turned off, any active screen recording will stop"
+                    android:textSize="18dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

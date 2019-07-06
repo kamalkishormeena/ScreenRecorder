@@ -30,6 +30,7 @@
                     android:src="@drawable/ic_delete_black_24dp" />
 
                 <TextView
+                    android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -38,6 +39,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"

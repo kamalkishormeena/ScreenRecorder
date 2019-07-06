@@ -10,6 +10,10 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
 
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,9 +22,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Activity.SettingsActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activity.MainActivity" />
+        <activity
+            android:name=".Activity.SettingsActivity"
+            android:parentActivityName=".Activity.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.MainActivity"
             android:screenOrientation="portrait">
@@ -33,12 +38,14 @@
 
         <activity
             android:name=".Activity.RecordingActivity"
+            android:parentActivityName=".Activity.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ControlsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.QualityActivity"
+            android:parentActivityName=".Activity.SettingsActivity"
             android:screenOrientation="portrait" />
 
         <provider
@@ -50,6 +57,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
+        <service android:name="com.app.kk.screenrecorder.ShakeSensor.ShakeService" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

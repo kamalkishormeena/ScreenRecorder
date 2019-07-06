@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="-40dp"
-                    android:text="No"
+                    android:text="Cancel"
                     android:textColor="@color/btnColor"
                     android:textSize="15dp" />
 
@@ -61,7 +61,7 @@
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Yes"
+                    android:text="Apply"
                     android:textColor="@color/btnColor"
                     android:textSize="15dp" />
 

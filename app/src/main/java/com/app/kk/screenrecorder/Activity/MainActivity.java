@@ -2,10 +2,16 @@ package com.app.kk.screenrecorder.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.media.CamcorderProfile;
 import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,6 +47,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -65,6 +72,9 @@ import com.app.kk.screenrecorder.Adapter.Adapter;
 import com.app.kk.screenrecorder.Adapter.CustomAdapter;
 import com.app.kk.screenrecorder.Model.Item;
 import com.app.kk.screenrecorder.R;
+import com.app.kk.screenrecorder.ShakeSensor.ScreenReceiver;
+import com.app.kk.screenrecorder.ShakeSensor.ShakeDetector;
+import com.app.kk.screenrecorder.SharedPref;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -104,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
     private ViewGroup containerView;
 
     CustomAdapter adapter1;
+    SharedPref sharedPref;
+    private BroadcastReceiver mReceiver = null;
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
 
 
     static {
@@ -139,6 +154,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPref = new SharedPref(this);
+
+        final IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        mReceiver = new ScreenReceiver();
+        registerReceiver(mReceiver, filter);
+
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar);
@@ -158,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
 //        ((ViewGroup) listview.getParent()).addView(emptyView);
 //        listview.setEmptyView(emptyView);
 
+
         fav = (FloatingActionButton) findViewById(R.id.fav);
         string1 = "s";
         //creating the adapter
@@ -172,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
         Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         width = display.getWidth();
         height = display.getHeight();
+
         fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,7 +228,31 @@ public class MainActivity extends AppCompatActivity {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         StartRecording(getIntent());
 
+        // ShakeDetector initialization
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+            @Override
+            public void onShake(int count) {
+                /*
+                 * The following method, "handleShakeEvent(count):" is a stub //
+                 * method you would use to setup whatever you want done once the
+                 * device has been shook.
+                 */
+                if (sharedPref.loadShakeState()) {
+                    fav.performClick();
+                    //Toast.makeText(MainActivity.this, "Shaked", Toast.LENGTH_SHORT).show();
+
+                } else
+                    Toast.makeText(MainActivity.this, "Please Activate This feature from Control Settings", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
     }
+
 
     PermissionListener permissionlistener = new PermissionListener() {
         @Override
@@ -293,7 +342,6 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-
     }
 
     private Intent intentFlag() {
@@ -380,6 +428,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void stopRecording() {
+        final MediaPlayer notify2 = MediaPlayer.create(this, R.raw.end);
+        notify2.start();
         mediaRecorder.stop();
         mediaRecorder.reset();
         Toast.makeText(this, "File save in Your phone storage" + file + string + ".mp4",
@@ -418,6 +468,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void activityStart() {
+        final MediaPlayer notify1 = MediaPlayer.create(this, R.raw.start);
+        notify1.start();
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -466,16 +518,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    private class MediaProjectionCallback extends MediaProjection.Callback {
-        @Override
-        public void onStop() {
-            mediaRecorder.stop();
-            mediaRecorder.reset();
-            Log.v(TAG, "Recording Stopped");
-
-            mediaProj = null;
-            stopCheck();
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopMediaProj();
+        if (mReceiver != null) {
+            unregisterReceiver(mReceiver);
+            mReceiver = null;
         }
     }
 
@@ -489,9 +538,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        stopMediaProj();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.share) {
+
+            try {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+                String sAux = "\n " + getString(R.string.app_name) + " - Download Now\n\n";
+                sAux = sAux + "https://play.google.com/store/apps/details?id=" + getPackageName() + " \n\n";
+                i.putExtra(Intent.EXTRA_TEXT, sAux);
+                startActivity(Intent.createChooser(i, "choose one"));
+            } catch (Exception e) {
+
+            }
+        }
+
+        switch (item.getItemId()) {
+            case R.id.about:
+                aboutDialog();
+                return true;
+
+            case R.id.settings:
+                Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                MainActivity.this.startActivity(myIntent);
+                return true;
+
+            case R.id.clear:
+                delDialog();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void stopMediaProj() {
@@ -526,34 +605,67 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.share) {
+    public void delDialog() {
+        final Dialog dialog = new Dialog(this);
+        View mylayout = LayoutInflater.from(this).inflate(R.layout.custom_delete_dialog, null);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(mylayout);
 
-            try {
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-                String sAux = "\n " + getString(R.string.app_name) + " - Download Now\n\n";
-                sAux = sAux + "https://play.google.com/store/apps/details?id=" + getPackageName() + " \n\n";
-                i.putExtra(Intent.EXTRA_TEXT, sAux);
-                startActivity(Intent.createChooser(i, "choose one"));
-            } catch (Exception e) {
+        TextView title = (TextView) dialog.findViewById(R.id.title);
+        TextView desc = (TextView) dialog.findViewById(R.id.desc);
 
+        title.setText("Confirm delete All");
+        desc.setText("Are you sure you want delete all video files!");
+
+        Button btnNo = (Button) dialog.findViewById(R.id.btnNo);
+        Button btnYes = (Button) dialog.findViewById(R.id.btnYes);
+
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
             }
-        }
+        });
 
-        switch (item.getItemId()) {
-            case R.id.about:
-                aboutDialog();
-                return true;
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arraylist.clear();
+                adapter1.notifyDataSetChanged();
+                File dir = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/");
+                if (dir.isDirectory()) {
+                    String[] children = dir.list();
+                    for (int i = 0; i < children.length; i++) {
+                        new File(dir, children[i]).delete();
+                    }
+                }
+                Toast.makeText(MainActivity.this, "All files are deleted successfully",
+                        Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+            }
+        });
 
-            case R.id.settings:
-                Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
-                MainActivity.this.startActivity(myIntent);
-            default:
-                return super.onOptionsItemSelected(item);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        dialog.show();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onPause() {
+        // when the shake is about to turn off
+        if (ScreenReceiver.wasScreenOn) {
+
+            Log.e("MYAPP", "SCREEN TURNED OFF");
+        } else {
+            // this is when onPause() is called when the shake state has not changed
         }
+        // Add the following line to unregister the Sensor Manager onPause
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
     }
 
     public void aboutDialog() {
@@ -575,5 +687,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // only when shake turns on
+        if (!ScreenReceiver.wasScreenOn) {
+            if (sharedPref.loadShakeState()) {
+                mediaRecorder.resume();
+            } else {
+                mediaRecorder.stop();
+            }
+            // this is when onResume() is called due to a shake state change
+            Log.e("MYAPP", "SCREEN TURNED ON");
+        } else {
+            // this is when onResume() is called when the shake state has not changed
+        }
+        // Add the following line to register the Session Manager Listener onResume
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+    }
+
+    private class MediaProjectionCallback extends MediaProjection.Callback {
+        @Override
+        public void onStop() {
+            mediaRecorder.stop();
+            mediaRecorder.reset();
+            Log.v(TAG, "Recording Stopped");
+
+            mediaProj = null;
+            stopCheck();
+        }
+
+    }
 
 }
