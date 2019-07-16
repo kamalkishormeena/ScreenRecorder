@@ -55,8 +55,8 @@
                     android:id="@+id/des1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Screen Capture will record upto 60 frame per second"
-                    android:textSize="22dp" />
+                    android:text="Screen Capture will record at 25 frame per second"
+                    android:textSize="18dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -76,7 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Screen Capture will record upto 8mbps"
-                    android:textSize="22dp" />
+                    android:textSize="18dp" />
             </LinearLayout>
 
         </LinearLayout>

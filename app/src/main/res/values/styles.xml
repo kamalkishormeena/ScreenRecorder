@@ -23,5 +23,11 @@
         <item name="buttonTint">@drawable/radio_button</item>
     </style>
 
+    <style name="Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="track">@drawable/track</item>
+        <item name="android:thumb">@drawable/thumb</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 
 </resources>

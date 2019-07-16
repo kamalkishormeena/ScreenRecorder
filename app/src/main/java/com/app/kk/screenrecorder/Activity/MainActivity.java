@@ -11,6 +11,7 @@ import android.media.CamcorderProfile;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -183,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         fav = (FloatingActionButton) findViewById(R.id.fav);
+
         string1 = "s";
         //creating the adapter
         adapter1 = new CustomAdapter(this, R.layout.custom_listview, arraylist);
@@ -228,6 +230,19 @@ public class MainActivity extends AppCompatActivity {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         StartRecording(getIntent());
 
+        PowerManager mgr = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        boolean wakeUpFlag = false;
+        PowerManager.WakeLock wakeLock = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "screenrecorder::MyWakelockTag");
+//        wakeLock.acquire();
+
+        if (!mgr.isInteractive()) {
+            if (sharedPref.loadScreenState()) {
+                wakeLock.release();
+                onStop();
+                Toast.makeText(MainActivity.this, "true", Toast.LENGTH_SHORT).show();
+
+            }
+        }
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
@@ -244,6 +259,10 @@ public class MainActivity extends AppCompatActivity {
                 if (sharedPref.loadShakeState()) {
                     fav.performClick();
                     //Toast.makeText(MainActivity.this, "Shaked", Toast.LENGTH_SHORT).show();
+
+                    //toStart
+//                    mediaProjection();
+//                    recorderFormat();
 
                 } else
                     Toast.makeText(MainActivity.this, "Please Activate This feature from Control Settings", Toast.LENGTH_SHORT).show();
@@ -383,6 +402,7 @@ public class MainActivity extends AppCompatActivity {
                         PendingIntent.getActivity(this, 0, yesIntent, PendingIntent.FLAG_UPDATE_CURRENT)));
         notificationManager.notify(notificationId, mBuilder.build());
         //startActivity(new Intent(this, MainActivity.class));
+
     }
 
     @Override
@@ -507,24 +527,14 @@ public class MainActivity extends AppCompatActivity {
             mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             mediaRecorder.setVideoEncodingBitRate(profile.videoBitRate);
-            mediaRecorder.setCaptureRate(20);
-            mediaRecorder.setVideoFrameRate(20);
+            mediaRecorder.setCaptureRate(sharedPref.loadFrateValue());
+            mediaRecorder.setVideoFrameRate(sharedPref.loadFrateValue());
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             int orientation = sArray.get(rotation + 90);
             mediaRecorder.setOrientationHint(orientation);
             mediaRecorder.prepare();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        stopMediaProj();
-        if (mReceiver != null) {
-            unregisterReceiver(mReceiver);
-            mReceiver = null;
         }
     }
 
@@ -535,6 +545,37 @@ public class MainActivity extends AppCompatActivity {
         virtualDisplay.release();
 
         stopMediaProj();
+    }
+
+    private void stopMediaProj() {
+        if (mediaProj != null) {
+            mediaProj.unregisterCallback(mediaPCB);
+            mediaProj.stop();
+            mediaProj = null;
+        }
+        Log.i(TAG, "MediaProjection Stopped");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case crp: {
+                if ((grantResults.length > 0) && (grantResults[0] +
+                        grantResults[1]) == PackageManager.PERMISSION_GRANTED) {
+                } else {
+
+                }
+                return;
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_toolbar, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -573,36 +614,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void stopMediaProj() {
-        if (mediaProj != null) {
-            mediaProj.unregisterCallback(mediaPCB);
-            mediaProj.stop();
-            mediaProj = null;
-        }
-        Log.i(TAG, "MediaProjection Stopped");
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case crp: {
-                if ((grantResults.length > 0) && (grantResults[0] +
-                        grantResults[1]) == PackageManager.PERMISSION_GRANTED) {
-
-                } else {
-
-                }
-                return;
+    public void aboutDialog() {
+        final Dialog dialog = new Dialog(MainActivity.this);
+        View mylayout = LayoutInflater.from(this).inflate(R.layout.layout_about, null);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(mylayout);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        Button dissmiss = (Button) dialog.findViewById(R.id.dissmiss);
+        dissmiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
             }
-        }
-    }
+        });
+        dialog.show();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_toolbar, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     public void delDialog() {
@@ -627,7 +656,6 @@ public class MainActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -648,7 +676,6 @@ public class MainActivity extends AppCompatActivity {
 
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-
         dialog.show();
 
     }
@@ -668,36 +695,13 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    public void aboutDialog() {
-        final Dialog dialog = new Dialog(MainActivity.this);
-        View mylayout = LayoutInflater.from(this).inflate(R.layout.layout_about, null);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(mylayout);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        Button dissmiss = (Button) dialog.findViewById(R.id.dissmiss);
-        dissmiss.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onResume() {
         super.onResume();
         // only when shake turns on
         if (!ScreenReceiver.wasScreenOn) {
-            if (sharedPref.loadShakeState()) {
-                mediaRecorder.resume();
-            } else {
-                mediaRecorder.stop();
-            }
+
             // this is when onResume() is called due to a shake state change
             Log.e("MYAPP", "SCREEN TURNED ON");
         } else {
@@ -718,6 +722,16 @@ public class MainActivity extends AppCompatActivity {
             stopCheck();
         }
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopMediaProj();
+        if (mReceiver != null) {
+            unregisterReceiver(mReceiver);
+            mReceiver = null;
+        }
     }
 
 }

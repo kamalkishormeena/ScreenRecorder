@@ -36,7 +36,8 @@
                 android:id="@+id/rg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checkedButton="@id/c">
+                android:checkedButton="@id/c"
+                android:orientation="vertical">
 
                 <RadioButton
                     android:id="@+id/a"

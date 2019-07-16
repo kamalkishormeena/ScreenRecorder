@@ -39,24 +39,36 @@
 
             <LinearLayout
                 android:id="@+id/shake"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <Switch
+                <android.support.v7.widget.SwitchCompat
                     android:id="@+id/s1"
+                    style="@style/Switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/btnColor"
                     android:text="Start Recording on Shake"
-                    android:textColor="@color/black"
                     android:textSize="22dp" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="When your shake your device screen recording automatically started."
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/s1Desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Shaking your device won't do anything special."
                     android:textSize="18dp" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".2" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -66,20 +78,32 @@
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
-                <Switch
+                <android.support.v7.widget.SwitchCompat
                     android:id="@+id/s2"
+                    style="@style/Switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Stop on Screen Off"
-                    android:textColor="@color/black"
-                    android:backgroundTint="@color/btnColor"
                     android:textSize="22dp" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="When your screen is turned off, any active screen recording will stop"
-                    android:textSize="18dp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/s2Desc"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="When your screen is turned off, any active screen recording will stop"
+                        android:textSize="18dp" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".2" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

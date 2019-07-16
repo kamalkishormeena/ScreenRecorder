@@ -20,6 +20,8 @@ import com.app.kk.screenrecorder.R;
 import com.app.kk.screenrecorder.SharedPref;
 
 import java.io.File;
+import java.text.NumberFormat;
+import java.text.ParseException;
 
 public class QualityActivity extends AppCompatActivity {
 
@@ -28,9 +30,12 @@ public class QualityActivity extends AppCompatActivity {
     LinearLayout frate;
     TextView desc1;
     SharedPref sharedPref;
+    int nfps = 25;
+    private String fps = "25 FPS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sharedPref = new SharedPref(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quality);
 
@@ -49,28 +54,48 @@ public class QualityActivity extends AppCompatActivity {
             }
         });
 
+        if (sharedPref.loadfDesc() == null) {
+            desc1.setText("Screen Capture will record at " + nfps + " frame per second");
+        } else {
+            desc1.setText(sharedPref.loadfDesc());
+        }
+
 
     }
 
     private void frateDialog() {
 
-        sharedPref = new SharedPref(this);
         final Dialog dialog = new Dialog(this);
         View mylayout = LayoutInflater.from(this).inflate(R.layout.custome_framerate_dialg, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(mylayout);
 
-        RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.rg);
+        final RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.rg);
         Button btnNo = (Button) dialog.findViewById(R.id.btnNo);
         Button btnYes = (Button) dialog.findViewById(R.id.btnYes);
 
-        final int selectedId = radioGroup.getCheckedRadioButtonId();
-        final RadioButton radioButton = (RadioButton) dialog.findViewById(selectedId);
-        final String fps = (String) radioButton.getText().toString();
+        if (sharedPref.loadFrate() != 0) {
+            radioGroup.check(sharedPref.loadFrate());
+        } else {
+            radioGroup.check(R.id.b);
+        }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                checkedId = radioGroup.getCheckedRadioButtonId();
+                RadioButton radioButton = (RadioButton) dialog.findViewById(checkedId);
+                try {
+                    nfps = NumberFormat.getInstance().parse(radioButton.getText().toString()).intValue();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getApplicationContext(), "" + nfps + " FPS", Toast.LENGTH_LONG).show();
+                sharedPref.setFrate(checkedId);
+                sharedPref.frateValue(nfps);
 
-        radioGroup.check(sharedPref.loadFrate());
-
+            }
+        });
 
         btnNo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,8 +107,10 @@ public class QualityActivity extends AppCompatActivity {
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sharedPref.setFrate(selectedId);
-                desc1.setText("Screen Capture will record upto " + fps);
+                desc1.setText("Screen Capture will record at " + nfps + " frame per second");
+
+                String desc = desc1.getText().toString();
+                sharedPref.frameDesc(desc);
 
                 dialog.dismiss();
             }

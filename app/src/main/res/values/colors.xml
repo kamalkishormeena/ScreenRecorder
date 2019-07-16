@@ -21,7 +21,7 @@
     <color name="textColor">#C11D1D1D</color>
 
     <color name="textColor_trans">#BAFFFFFF</color>
-
+    <color name="grey">#E6E6E6</color>
 
     <color name="trans">#57FCFCFC</color>
     <color name="black">#000000</color>

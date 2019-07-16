@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-feature
         android:name="android.hardware.sensor.accelerometer"
@@ -21,6 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:hardwareAccelerated="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".Activity.SettingsActivity"
@@ -58,7 +60,13 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <service android:name="com.app.kk.screenrecorder.ShakeSensor.ShakeService" />
+        <service android:name=".ShakeSensor.ShakeService" />
+
+        <service android:name=".Screen.ScreenService" />
+
+        <service
+            android:name=".ScreenOnOffBackgroundService"
+            android:enabled="true" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
