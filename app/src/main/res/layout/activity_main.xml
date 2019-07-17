@@ -16,16 +16,14 @@
 
         <include layout="@layout/app_bar_main" />
 
-        <include
-            android:id="@+id/emptyView"
-            layout="@layout/empty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
+        <!--<include-->
+        <!--android:id="@+id/emptyView"-->
+        <!--layout="@layout/empty"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:visibility="gone" />-->
 
-        <include
-            layout="@layout/recyclerview_layout"
-            android:visibility="visible" />
+        <include layout="@layout/recyclerview_layout" />
 
     </LinearLayout>
 

@@ -3,8 +3,12 @@ package com.app.kk.screenrecorder.Adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
@@ -20,8 +24,11 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.kk.screenrecorder.Activity.MainActivity;
 import com.app.kk.screenrecorder.Model.Item;
 import com.app.kk.screenrecorder.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.util.List;
@@ -54,6 +61,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
         String duration = arraylist.get(position).getVidDuration();
         String size = arraylist.get(position).getVidSize();
 
+
+        Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
+        Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(String.valueOf(uri), MediaStore.Video.Thumbnails.MINI_KIND);
+
+        viewholder.vidImage.setImageBitmap(bitmap);
         viewholder.setData(title, duration, size);
 
         viewholder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +162,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
 
     @Override
     public int getItemCount() {
-        return arraylist.size();
+        if (arraylist == null)
+            return 0;
+        else
+            return arraylist.size();
     }
 
     public class EmptyViewHolder extends RecyclerView.ViewHolder {
@@ -231,6 +246,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
                         Toast.LENGTH_LONG).show();
                 arraylist.remove(position);
                 notifyDataSetChanged();
+
+                removeItem(position);
                 dialog.dismiss();
             }
         });
@@ -242,4 +259,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
 
     }
 
+    public void removeItem(int pos) {
+        notifyItemRemoved(pos);
+        notifyItemRangeChanged(pos, arraylist.size());
+    }
+
 }
+

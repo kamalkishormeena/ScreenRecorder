@@ -29,70 +29,75 @@
             >
 
         <LinearLayout
-            android:layout_margin="10dp"
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             >
 
             <ImageView
                 android:src="@drawable/ic_play_circle_outline_black_24dp"
                 android:id="@+id/vidImage"
+                android:layout_width="match_parent"
                 android:layout_gravity="center"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
-
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+        </LinearLayout>
 
             <LinearLayout
-                android:paddingLeft="20dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-
-                <TextView
-                    android:id="@+id/vidTitle"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:text="Title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="4"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:paddingTop="10dp"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp">
 
 
                     <TextView
-                        android:id="@+id/vidDuration"
-                        android:layout_weight="1.0"
-                        android:textSize="16dp"
-                        android:textColor="@color/textColor_trans"
-                        android:text="Duration : 00:00:02"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:id="@+id/vidTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Title"
+                        android:textColor="@color/white"
+                        android:textSize="16dp" />
 
-                    <TextView
-                        android:id="@+id/vidSize"
-                        android:layout_weight="1.0"
-                        android:textSize="16dp"
-                        android:textColor="@color/textColor_trans"
-                        android:text="Size : 100MB"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="10dp">
+
+
+                        <TextView
+                            android:id="@+id/vidDuration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:text="Duration : 00:00:02"
+                            android:textColor="@color/textColor_trans"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/vidSize"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:text="Size : 100MB"
+                            android:textColor="@color/textColor_trans"
+                            android:textSize="16dp" />
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
-
-
             </LinearLayout>
-
-        </LinearLayout>
 
         </LinearLayout>
 

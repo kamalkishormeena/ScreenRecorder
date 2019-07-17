@@ -1,5 +1,6 @@
 package com.app.kk.screenrecorder.Model;
 
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 public class Item {

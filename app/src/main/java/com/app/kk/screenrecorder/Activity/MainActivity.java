@@ -4,14 +4,18 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.CamcorderProfile;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.PowerManager;
+import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -71,6 +75,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.app.kk.screenrecorder.Adapter.Adapter;
 import com.app.kk.screenrecorder.Adapter.CustomAdapter;
+import com.app.kk.screenrecorder.Utils.EmptyRecyclerView;
 import com.app.kk.screenrecorder.Model.Item;
 import com.app.kk.screenrecorder.R;
 import com.app.kk.screenrecorder.ShakeSensor.ScreenReceiver;
@@ -96,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
     private MediaRecorder mediaRecorder;
     private static final SparseIntArray sArray = new SparseIntArray();
     private static final int crp = 10;
-    private RecyclerView recyclerView;
+    //    private RecyclerView recyclerView;
+    private EmptyRecyclerView recyclerView;
 
     String string;
     List<Item> arraylist;
@@ -175,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setEmptyView(findViewById(R.id.emptyView));
 
         arraylist = new ArrayList<>();
 //        listview = (ListView) findViewById(R.id.listView1);
@@ -269,7 +276,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    public void checkIfRecyclerViewIsEmpty() {
+        if (arraylist.isEmpty()) {
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+        }
     }
 
 
@@ -308,6 +322,10 @@ public class MainActivity extends AppCompatActivity {
         string = formatter.format(now);
     }
 
+    public Bitmap createThumbnailFromPath(String filePath) {
+        return ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Images.Thumbnails.MINI_KIND);
+    }
+
     public void filePath() {
         arraylist.clear();
         listString = new ArrayList<String>();
@@ -337,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
                 String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                 aLong = Long.parseLong(time);
             }
-            arraylist.add(new Item("video.png", list[i].getName(), "" + timeFormat(aLong), "Size : " + fileSize(length)));
+            arraylist.add(new Item("Video.png", list[i].getName(), "" + timeFormat(aLong), "Size : " + fileSize(length)));
 
             adapter1 = new CustomAdapter(this, R.layout.custom_listview, arraylist);
             final Adapter adapter = new Adapter(this, R.layout.custom_listview, arraylist);
@@ -345,6 +363,7 @@ public class MainActivity extends AppCompatActivity {
 //            listview.setAdapter(adapter);
             recyclerView.setAdapter(adapter1);
             adapter1.notifyDataSetChanged();
+            checkIfRecyclerViewIsEmpty();
 
         }
 
@@ -612,6 +631,41 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void RecyclerAdapter() {
+        checkIfRecyclerViewIsEmpty();
+        adapter1.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount) {
+                super.onItemRangeChanged(positionStart, itemCount);
+                checkIfRecyclerViewIsEmpty();
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                checkIfRecyclerViewIsEmpty();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                checkIfRecyclerViewIsEmpty();
+            }
+
+            @Override
+            public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+                super.onItemRangeMoved(fromPosition, toPosition, itemCount);
+                checkIfRecyclerViewIsEmpty();
+            }
+
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                checkIfRecyclerViewIsEmpty();
+            }
+        });
     }
 
 
