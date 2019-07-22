@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
-import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.hardware.Sensor;
@@ -34,10 +33,12 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -75,6 +76,9 @@ import android.support.v7.widget.Toolbar;
 
 import com.app.kk.screenrecorder.Adapter.Adapter;
 import com.app.kk.screenrecorder.Adapter.CustomAdapter;
+import com.app.kk.screenrecorder.Interface.RecyclerClickListener;
+import com.app.kk.screenrecorder.RecyclerTouchListener;
+import com.app.kk.screenrecorder.ToolbarActionModeCallback;
 import com.app.kk.screenrecorder.Utils.EmptyRecyclerView;
 import com.app.kk.screenrecorder.Model.Item;
 import com.app.kk.screenrecorder.R;
@@ -88,6 +92,8 @@ import static android.app.Notification.GROUP_ALERT_SUMMARY;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private ActionMode mActionMode;
 
     private static final String TAG = "MainActivity";
     private static final int REQUEST_CODE = 1000;
@@ -189,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
 //        ((ViewGroup) listview.getParent()).addView(emptyView);
 //        listview.setEmptyView(emptyView);
 
-
         fav = (FloatingActionButton) findViewById(R.id.fav);
 
         string1 = "s";
@@ -273,16 +278,17 @@ public class MainActivity extends AppCompatActivity {
 
                 } else
                     Toast.makeText(MainActivity.this, "Please Activate This feature from Control Settings", Toast.LENGTH_SHORT).show();
-
             }
         });
+
+        implementRecyclerViewClickListeners();
+
     }
 
+
     public void checkIfRecyclerViewIsEmpty() {
-        if (arraylist.isEmpty()) {
-            emptyView.setVisibility(View.VISIBLE);
-        } else {
-            emptyView.setVisibility(View.GONE);
+        if (adapter1.getItemCount() <= 0) {
+            recyclerView.setEmptyView(emptyView);
         }
     }
 
@@ -363,8 +369,6 @@ public class MainActivity extends AppCompatActivity {
 //            listview.setAdapter(adapter);
             recyclerView.setAdapter(adapter1);
             adapter1.notifyDataSetChanged();
-            checkIfRecyclerViewIsEmpty();
-
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -624,10 +628,6 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(myIntent);
                 return true;
 
-            case R.id.clear:
-                delDialog();
-                return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -711,10 +711,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         btnYes.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View v) {
-                arraylist.clear();
-                adapter1.notifyDataSetChanged();
+
+                /** for full Directory delete */
                 File dir = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/");
                 if (dir.isDirectory()) {
                     String[] children = dir.list();
@@ -722,8 +723,11 @@ public class MainActivity extends AppCompatActivity {
                         new File(dir, children[i]).delete();
                     }
                 }
-                Toast.makeText(MainActivity.this, "All files are deleted successfully",
+                adapter1.notifyDataSetChanged();
+                Toast.makeText(MainActivity.this, adapter1.getSelectedCount() + " files are deleted successfully",
                         Toast.LENGTH_LONG).show();
+                mActionMode.finish();
+                recyclerView.setEmptyView(emptyView);
                 dialog.dismiss();
             }
         });
@@ -785,6 +789,86 @@ public class MainActivity extends AppCompatActivity {
         if (mReceiver != null) {
             unregisterReceiver(mReceiver);
             mReceiver = null;
+        }
+    }
+
+
+    /**
+     * NEW Method
+     */
+
+    //Implement item click and long click over recycler view
+    private void implementRecyclerViewClickListeners() {
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new RecyclerClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                //If ActionMode not null select item
+                if (mActionMode != null)
+                    onListItemSelect(position);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                //Select item on long click
+                onListItemSelect(position);
+            }
+        }));
+    }
+
+    //List item select method
+    private void onListItemSelect(int position) {
+        adapter1.toggleSelection(position);//Toggle the selection
+
+        boolean hasCheckedItems = adapter1.getSelectedCount() > 0;//Check if any items are already selected or not
+
+
+        if (hasCheckedItems && mActionMode == null)
+            // there are some selected items, start the actionMode
+            mActionMode = ((AppCompatActivity) this).startSupportActionMode(new ToolbarActionModeCallback(this, adapter1, MainActivity.this, arraylist));
+        else if (!hasCheckedItems && mActionMode != null)
+            // there no selected items, finish the actionMode
+            mActionMode.finish();
+
+        if (mActionMode != null) {
+            //set action mode title on item selection
+            View myview = LayoutInflater.from(getApplicationContext()).inflate(R.layout.action_mode_bar, null);
+            mActionMode.setCustomView(myview);
+            TextView actionTitle = findViewById(R.id.actiontitle);
+            actionTitle.setText("Screen Recorder(" + String.valueOf(adapter1
+                    .getSelectedCount()) + ")");
+//            mActionMode.setTitle(String.valueOf(adapter1
+//                    .getSelectedCount()) + " selected");
+        }
+
+    }
+
+    //Set action mode null after use
+    public void setNullToActionMode() {
+        if (mActionMode != null)
+            mActionMode = null;
+    }
+
+    //Delete selected rows
+    public void deleteRows() {
+        SparseBooleanArray selected = adapter1
+                .getSelectedIds();//Get selected ids
+
+        //Loop all selected ids
+        for (int i = (selected.size() - 1); i >= 0; i--) {
+            if (selected.valueAt(i)) {
+                //If current id is selected remove the item via key
+                File fdelete = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(selected.keyAt(i)));
+                fdelete.delete();
+                recyclerView.setEmptyView(emptyView);
+
+                arraylist.remove(selected.keyAt(i));
+                adapter1.notifyDataSetChanged();//notify adapter
+
+                //Snackbar.make(view, selected.size() + " item deleted.", Snackbar.LENGTH_LONG).show();
+                Toast.makeText(this, selected.size() + " item deleted.", Toast.LENGTH_SHORT).show();//Show Toast
+                mActionMode.finish();//Finish action mode after use
+
+            }
         }
     }
 

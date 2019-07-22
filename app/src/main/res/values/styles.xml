@@ -10,6 +10,10 @@
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
+
+        <item name="windowActionModeOverlay">true</item>
+
+
     </style>
 
     <style name="DialogAnimation">
@@ -27,6 +31,11 @@
         <item name="track">@drawable/track</item>
         <item name="android:thumb">@drawable/thumb</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="colorAccent">@color/btnColor</item>
     </style>
 
 

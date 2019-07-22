@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#818181</color>
-    <color name="colorAccent">#FCFCFC</color>
+    <color name="colorAccent">#E6E6E6</color>
 
     <color name="bg">#FFFFFF</color>
     <color name="btnColor">#007BFF</color>
@@ -25,5 +25,10 @@
 
     <color name="trans">#57FCFCFC</color>
     <color name="black">#000000</color>
+    <color name="grey2">#919191</color>
+    <color name="blackOverlay">#65000000</color>
+
+    <color name="select">#00AEFF</color>
+
 
 </resources>

@@ -24,6 +24,7 @@
         android:layout_gravity="center"
         android:background="@color/bg"
         android:orientation="vertical"
+        android:visibility="visible"
         android:padding="20dp">
 
         <RelativeLayout

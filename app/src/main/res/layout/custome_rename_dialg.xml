@@ -27,16 +27,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:textColor="@color/black"
                     android:text="Rename File"
                     android:textSize="22dp" />
 
             </LinearLayout>
 
             <EditText
+                theme="@style/EditText"
                 android:id="@+id/rename"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
+                android:autoSizeMaxTextSize="18dp"
+                android:backgroundTint="@color/btnColor"
+                android:cursorVisible="true"
+                android:fadeScrollbars="true"
+                android:focusedByDefault="true"
+                android:inputType="textCapSentences"
+                android:scrollbarSize="1dp"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="horizontal"
+                android:textColor="@color/grey2"
+                android:textSize="18dp"
                 android:hint="Enter Name" />
 
             <LinearLayout
