@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingTop="5dp"
+    android:paddingRight="5dp">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-2dp"
+        android:elevation="8dp"
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="4dp"
+        card_view:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:id="@+id/lc1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/cardbg"
+            android:foreground="@drawable/accent_ripple"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/vidImage"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:foreground="@color/blackOverlay"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/vidTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/vidDuration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Duration : 00:00:02"
+                    android:textColor="@color/textColor_trans"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/vidSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Size : 100MB"
+                    android:textColor="@color/textColor_trans"
+                    android:textSize="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/itemMenu"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_more_vert" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

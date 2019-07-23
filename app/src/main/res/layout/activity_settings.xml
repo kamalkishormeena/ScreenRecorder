@@ -1,149 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="@color/bg"
     android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
     tools:context=".Activity.SettingsActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-    <include layout="@layout/setting_bar" />
+
+        <include layout="@layout/setting_bar" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp">
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/quality"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Quality"
                 android:layout_marginBottom="10dp"
-                android:textColor="@color/textColor"
                 android:clickable="true"
-                android:textSize="22dp"/>
+                android:text="Quality"
+                android:textColor="@color/textColor"
+                android:textSize="22dp" />
 
             <TextView
                 android:id="@+id/rSetting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Record Settings"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:layout_marginBottom="10dp"
+                android:text="Record Settings"
                 android:textColor="@color/textColor"
-                android:clickable="true"
-                android:textSize="22dp"/>
+                android:textSize="22dp" />
 
             <TextView
                 android:id="@+id/controls"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Controls"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:layout_marginBottom="10dp"
+                android:text="Controls"
                 android:textColor="@color/textColor"
-                android:clickable="true"
-                android:textSize="22dp"/>
+                android:textSize="22dp" />
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
 
             android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/rate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Rate Us Now"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:layout_marginBottom="10dp"
+                android:text="Rate Us Now"
                 android:textColor="@color/textColor"
-                android:clickable="true"
-                android:textSize="22dp"/>
+                android:textSize="22dp" />
 
             <TextView
                 android:id="@+id/checkUpdates"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Check For Update"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:layout_marginBottom="10dp"
+                android:text="Check For Update"
                 android:textColor="@color/textColor"
-                android:clickable="true"
-                android:textSize="22dp"/>
+                android:textSize="22dp" />
 
             <TextView
                 android:id="@+id/tc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Term And conditions"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:layout_marginBottom="10dp"
+                android:text="Term And conditions"
                 android:textColor="@color/textColor"
-                android:clickable="true"
-                android:textSize="22dp"/>
+                android:textSize="22dp" />
 
             <TextView
                 android:id="@+id/pp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Privacy Policies"
                 android:layout_marginBottom="10dp"
+                android:clickable="true"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
+                android:text="Privacy Policies"
                 android:textColor="@color/textColor"
-                android:clickable="true"
-                android:textSize="22dp"/>
+                android:textSize="22dp" />
 
             <TextView
                 android:id="@+id/feedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Give Feedback"
                 android:layout_marginBottom="10dp"
+                android:clickable="true"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
+                android:text="Give Feedback"
                 android:textColor="@color/textColor"
-                android:clickable="true"
-                android:textSize="22dp"/>
+                android:textSize="22dp" />
 
             <TextView
                 android:id="@+id/more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="More Apps"
                 android:layout_marginBottom="10dp"
+                android:clickable="true"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
+                android:text="More Apps"
                 android:textColor="@color/textColor"
-                android:clickable="true"
-                android:textSize="22dp"/>
-
+                android:textSize="22dp" />
         </LinearLayout>
     </LinearLayout>
 

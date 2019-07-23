@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 
 import com.app.kk.screenrecorder.Model.Item;
 import com.app.kk.screenrecorder.R;
+import com.app.kk.screenrecorder.SharedPref;
 
 import java.io.File;
 import java.util.List;
@@ -44,20 +46,45 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
     Context context;
     File file;
     private SparseBooleanArray mSelectedItemsIds;
+    public static final int SPAN_COUNT_ONE = 1;
+    public static final int SPAN_COUNT_TWO = 2;
+
+    private static final int VIEW_TYPE_SMALL = 1;
+    private static final int VIEW_TYPE_BIG = 2;
+
+    private GridLayoutManager mLayoutManager;
 
 
-    public CustomAdapter(Context context, int cusstom_layout, List<Item> arraylist) {
+    public CustomAdapter(Context context, GridLayoutManager layoutManager, int cusstom_layout, List<Item> arraylist) {
         this.arraylist = arraylist;
         this.context = context;
+        mLayoutManager = layoutManager;
         mSelectedItemsIds = new SparseBooleanArray();
 
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        int spanCount = mLayoutManager.getSpanCount();
+        if (spanCount == SPAN_COUNT_ONE) {
+            return VIEW_TYPE_BIG;
+        } else {
+            return VIEW_TYPE_SMALL;
+        }
     }
 
     @NonNull
     @Override
     public Viewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_listview, viewGroup, false);
-        return new Viewholder(view);
+//        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_listview, viewGroup, false);
+//        return new Viewholder(view);
+        View view;
+        if (i == VIEW_TYPE_BIG) {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_listview, viewGroup, false);
+        } else {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_grid, viewGroup, false);
+        }
+        return new Viewholder(view, i);
 
     }
 
@@ -297,7 +324,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
         private ImageView vidImage;
         private LinearLayout lc1;
 
-        public Viewholder(@NonNull View itemView) {
+        public Viewholder(@NonNull View itemView, int i) {
             super(itemView);
             lc1 = itemView.findViewById(R.id.lc1);
             vidImage = itemView.findViewById(R.id.vidImage);

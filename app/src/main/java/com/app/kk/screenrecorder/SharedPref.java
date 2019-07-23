@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedPref {
-    SharedPreferences uiSharedPref, shakeState, screenState, frate, fdesc, frateValue;
+    SharedPreferences uiSharedPref, shakeState, screenState, frate, fdesc, frateValue, view;
 
     public SharedPref(Context context) {
         uiSharedPref = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
@@ -13,6 +13,7 @@ public class SharedPref {
         frateValue = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
         screenState = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
         fdesc = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
+        view = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
     }
 
     // this method will save the nightMode State : True or False
@@ -38,6 +39,18 @@ public class SharedPref {
     public Boolean loadShakeState() {
         Boolean state = shakeState.getBoolean("shake", false);
         return state;
+    }
+
+    public void setView(int value) {
+        SharedPreferences.Editor editor = view.edit();
+        editor.putInt("layout", value);
+        editor.commit();
+    }
+
+    // this method will load the Night Mode State
+    public int loadView() {
+        int value = frate.getInt("layout", 1);
+        return value;
     }
 
     public void setScreenState(Boolean state) {

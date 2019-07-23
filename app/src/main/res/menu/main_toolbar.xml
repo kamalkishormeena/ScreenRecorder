@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/Change"
+        android:icon="@drawable/avd_list_to_grid"
+        android:title="Change Layout"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/share"
         android:icon="@drawable/ic_share_black_24dp"
         app:showAsAction="never"

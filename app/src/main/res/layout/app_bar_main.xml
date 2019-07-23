@@ -10,11 +10,15 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="@string/app_name"
-        android:textSize="25dp"
+        android:gravity="center"
+        app:autoSizeMaxTextSize="25sp"
+        app:autoSizeMinTextSize="21sp"
+        app:autoSizeStepGranularity="21sp"
         android:textColor="@color/color2"
         android:layout_gravity="center"
+        app:autoSizeTextType="uniform"
         android:id="@+id/toolbar_title"
         android:textStyle="bold"
         />

@@ -1,6 +1,8 @@
-package com.app.kk.screenrecorder;
+package com.app.kk.screenrecorder.Utils;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.view.ActionMode;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import com.app.kk.screenrecorder.Activity.MainActivity;
 import com.app.kk.screenrecorder.Adapter.CustomAdapter;
 import com.app.kk.screenrecorder.Model.Item;
+import com.app.kk.screenrecorder.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +58,14 @@ public class ToolbarActionModeCallback implements ActionMode.Callback {
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete:
-                mainActivity.deleteRows();
+                Drawable drawable = item.getIcon();
+                if (drawable instanceof Animatable) {
+                    ((Animatable) drawable).start();
+                }
+                mainActivity.delDialog();
                 break;
             case R.id.action_share:
+//                mainActivity.shareRows();
                 Toast.makeText(context, "Coming Soon", Toast.LENGTH_LONG).show();
                 break;
         }
