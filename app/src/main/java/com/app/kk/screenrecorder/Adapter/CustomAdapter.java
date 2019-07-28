@@ -4,9 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
@@ -14,7 +12,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -33,7 +30,6 @@ import android.widget.Toast;
 
 import com.app.kk.screenrecorder.Model.Item;
 import com.app.kk.screenrecorder.R;
-import com.app.kk.screenrecorder.SharedPref;
 
 import java.io.File;
 import java.util.List;
@@ -121,7 +117,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
             @Override
             public void onClick(View v) {
                 final PopupMenu popupMenu = new PopupMenu(v.getContext(), viewholder.menuBtn);
-                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+                popupMenu.getMenuInflater().inflate(R.menu.item_popup_menu, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {

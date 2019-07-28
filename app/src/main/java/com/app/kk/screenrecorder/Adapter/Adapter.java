@@ -66,7 +66,7 @@ public class Adapter extends ArrayAdapter<Item> {
             @Override
             public void onClick(View v) {
                 final PopupMenu popupMenu = new PopupMenu(getContext(),menuImg);
-                popupMenu.getMenuInflater().inflate(R.menu.popup_menu,popupMenu.getMenu());
+                popupMenu.getMenuInflater().inflate(R.menu.item_popup_menu, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {

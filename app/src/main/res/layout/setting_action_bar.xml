@@ -8,5 +8,4 @@
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     android:layout_marginBottom="20dp">
 
-
 </android.support.v7.widget.Toolbar>

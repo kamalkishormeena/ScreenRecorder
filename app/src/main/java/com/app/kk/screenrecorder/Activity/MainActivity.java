@@ -206,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setEmptyView(emptyView);
 
+
         arraylist = new ArrayList<>();
 
         fav = (FloatingActionButton) findViewById(R.id.fav);
@@ -560,6 +561,7 @@ public class MainActivity extends AppCompatActivity {
             mediaRecorder.setVideoSize(width, height);
             mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            mediaRecorder.setProfile(profile);
             mediaRecorder.setVideoEncodingBitRate(profile.videoBitRate);
             mediaRecorder.setCaptureRate(sharedPref.loadFrateValue());
             mediaRecorder.setVideoFrameRate(sharedPref.loadFrateValue());
@@ -608,7 +610,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_toolbar, menu);
+        getMenuInflater().inflate(R.menu.main_menu_toolbar, menu);
         if (sharedPref.loadView() == 1) {
             menu.findItem(R.id.Change).setIcon(AnimatedVectorDrawableCompat.create(MainActivity.this, R.drawable.avd_grid_to_list));
         } else {

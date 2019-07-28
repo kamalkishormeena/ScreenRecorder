@@ -18,6 +18,7 @@
         android:elevation="8dp"
         card_view:cardElevation="4dp"
         card_view:cardUseCompatPadding="true"
+        android:stateListAnimator="@animator/card_anim"
         >
 
         <LinearLayout

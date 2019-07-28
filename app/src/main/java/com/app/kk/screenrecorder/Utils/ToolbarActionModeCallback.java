@@ -3,15 +3,9 @@ package com.app.kk.screenrecorder.Utils;
 import android.content.Context;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.view.ActionMode;
-import android.util.Log;
-import android.util.SparseBooleanArray;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.app.kk.screenrecorder.Activity.MainActivity;
@@ -19,7 +13,6 @@ import com.app.kk.screenrecorder.Adapter.CustomAdapter;
 import com.app.kk.screenrecorder.Model.Item;
 import com.app.kk.screenrecorder.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ToolbarActionModeCallback implements ActionMode.Callback {
@@ -39,7 +32,7 @@ public class ToolbarActionModeCallback implements ActionMode.Callback {
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-        mode.getMenuInflater().inflate(R.menu.menu_main, menu);//Inflate the menu over action mode
+        mode.getMenuInflater().inflate(R.menu.action_mode_menu, menu);//Inflate the menu over action mode
         return true;
     }
 

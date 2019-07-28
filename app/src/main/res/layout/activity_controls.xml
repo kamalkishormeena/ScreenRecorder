@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/setting_bar" />
+        <include layout="@layout/setting_action_bar" />
 
         <LinearLayout
             android:layout_width="match_parent"
