@@ -28,6 +28,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.kk.screenrecorder.Dialog.AdapterDeleteDialog;
 import com.app.kk.screenrecorder.Model.Item;
 import com.app.kk.screenrecorder.R;
 
@@ -123,7 +124,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.item_delete:
-                                delDialog(position);
+                                AdapterDeleteDialog.delDialog(position, context, arraylist, CustomAdapter.this);
+                                //delDialog(position);
                                 return true;
 
                             case R.id.item_share:
@@ -176,7 +178,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
         rename.setSelectAllOnFocus(true);
         rename.selectAll();
 
-
         Button btnNo = (Button) dialog.findViewById(R.id.btnNo);
         Button btnYes = (Button) dialog.findViewById(R.id.btnYes);
 
@@ -186,7 +187,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
                 dialog.dismiss();
             }
         });
-
 
         final String name = rename.getText().toString();
         final File file2 = new File(file.getParentFile(), name);
@@ -230,45 +230,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, listString.get(position));
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         context.startActivity(Intent.createChooser(shareIntent, "Share with"));
-    }
-
-    public void delDialog(final int position) {
-        final Dialog dialog = new Dialog(context);
-        View mylayout = LayoutInflater.from(context).inflate(R.layout.custom_delete_dialog, null);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(mylayout);
-
-        Button btnNo = (Button) dialog.findViewById(R.id.btnNo);
-        Button btnYes = (Button) dialog.findViewById(R.id.btnYes);
-
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                file = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
-                file.delete();
-                Toast.makeText(context, "Video deleted successfully",
-                        Toast.LENGTH_LONG).show();
-                arraylist.remove(position);
-                notifyDataSetChanged();
-
-                removeItem(position);
-                dialog.dismiss();
-            }
-        });
-
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-
-        dialog.show();
-
     }
 
     /***

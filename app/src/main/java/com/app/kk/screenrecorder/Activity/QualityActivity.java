@@ -26,12 +26,13 @@ public class QualityActivity extends AppCompatActivity {
     private Toolbar toolbar;
     final String KEY_SAVED_RADIO_BUTTON_INDEX = "SAVED_RADIO_BUTTON_INDEX";
     LinearLayout frate, bitRate;
-    TextView desc1, desc2;
+    //    int nbits = nMbps * 1000000;
+    public int checkIDFR;
+    TextView desc1;
     SharedPref sharedPref;
     int nfps = 25;
     int nMbps = 4;
-    int nbits = nMbps * 1000000;
-    int checkIDFR;
+    TextView desc2;
     int checkIDVBR;
     private String fps = "25 FPS";
 
@@ -166,8 +167,6 @@ public class QualityActivity extends AppCompatActivity {
                 }
                 checkIDVBR = checkedId;
                 Toast.makeText(getApplicationContext(), "" + nMbps + " Mbps", Toast.LENGTH_LONG).show();
-                nbits = nMbps * 1000000;
-
             }
         });
 
@@ -182,7 +181,7 @@ public class QualityActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sharedPref.setVrate(checkIDVBR);
-                sharedPref.VrateValue2(nbits);
+                sharedPref.VrateValue(nMbps);
                 desc2.setText("Screen Capture will record at " + nMbps + "mbps");
 
                 String desc1 = desc2.getText().toString();

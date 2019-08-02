@@ -159,20 +159,6 @@ public class SharedPref {
         return value;
     }
 
-    /**
-     * Video Bitrate Value 2
-     */
-    public void VrateValue2(int value) {
-        SharedPreferences.Editor editor = vbValue.edit();
-        editor.putInt("frate", value);
-        editor.commit();
-    }
-
-    public int loadVrateValue2() {
-        int value = vbValue.getInt("frate", 25);
-        return value;
-    }
-
 
     /**
      * Shake Description

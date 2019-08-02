@@ -1,85 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center">
 
-<android.support.v7.widget.CardView
-    android:layout_width="270dp"
-    android:layout_height="300dp"
-    app:cardBackgroundColor="@color/colorPrimary"
-    app:cardCornerRadius="15dp">
-
-    <LinearLayout
+    <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_margin="20dp"
-        android:orientation="vertical">
+        android:layout_height="80dp" />
 
-    <TextView
-
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.CardView
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textColor="@color/txtColor"
-        android:textSize="23dp"/>
+        android:layout_below="@+id/view"
+        android:layout_centerInParent="true"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:layout_marginTop="10dp"
-            android:textSize="18dp"
-            android:text="Current Version :  "/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/app_name"
+                    android:textColor="@color/txtColor"
+                    android:textSize="22sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Current Version :  "
+                        android:textColor="@color/textColor"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/app_ver"
+                        android:textColor="@color/textColor"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:lineHeight="24sp"
+                    android:text="This app is Developed by Kamal Kishor Meena."
+                    android:textColor="@color/textColor"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:lineHeight="24sp"
+                    android:text="This Screen Recorder is based on simple UI and having all basic features for screen recording."
+                    android:textColor="@color/textColor"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/dissmiss"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColor"
-                android:layout_marginTop="10dp"
-                android:textSize="18dp"
-                android:text="@string/app_ver"/>
+                android:layout_gravity="bottom"
+                android:background="@color/btnColor"
+                android:text="DISSMISS"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15dp" />
         </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-        <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
-        android:layout_marginTop="10dp"
-        android:textSize="18dp"
-        android:text="This app is Developed by Kamal Kishor Meena."/>
-
-        <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
-        android:layout_marginTop="10dp"
-        android:textSize="18dp"
-        android:text="This Screen Recorder is based on simple UI and having all basic features for screen recording."/>
-
-
-    </LinearLayout>
-
-       <Button
-        android:id="@+id/dissmiss"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="DISSMISS"
-        android:textSize="15dp"
-        android:textColor="@color/colorPrimary"
-        android:layout_marginTop="32dp"
-        android:background="@color/btnColor"
-        android:layout_gravity="bottom"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        />
-
-</android.support.v7.widget.CardView>
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:elevation="2dp"
+        android:src="@mipmap/ic_launcher" />
 
 </RelativeLayout>

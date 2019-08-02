@@ -5,17 +5,15 @@ import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.drawable.Animatable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.CamcorderProfile;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
-import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.PowerManager;
-import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
@@ -51,7 +49,6 @@ import android.view.Surface;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -76,8 +73,9 @@ import android.support.v4.app.NotificationCompat.Action;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 
-import com.app.kk.screenrecorder.Adapter.Adapter;
 import com.app.kk.screenrecorder.Adapter.CustomAdapter;
+import com.app.kk.screenrecorder.Dialog.AboutDialog;
+import com.app.kk.screenrecorder.Dialog.RatingApp;
 import com.app.kk.screenrecorder.Interface.RecyclerClickListener;
 import com.app.kk.screenrecorder.Utils.RecyclerTouchListener;
 import com.app.kk.screenrecorder.Utils.ToolbarActionModeCallback;
@@ -98,11 +96,11 @@ import static com.app.kk.screenrecorder.Adapter.CustomAdapter.SPAN_COUNT_TWO;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActionMode mActionMode;
+    public ActionMode mActionMode;
 
     private static final String TAG = "MainActivity";
     private static final int REQUEST_CODE = 1000;
-    private int cms;
+    private int densityDPI;
     private MediaProjectionManager mediaPM;
     private static int width;
     private static int height;
@@ -187,43 +185,37 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
+        RatingApp.app_launched(this);
+
         recyclerView = findViewById(R.id.listView2);
         emptyView = findViewById(R.id.emptyView);
-
-        /**custom emptyView layout*/
-//        emptyView1 = getLayoutInflater().inflate(R.layout.empty, null);
-//        ((ViewGroup) recyclerView.getParent()).addView(emptyView1);
-
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         if (sharedPref.loadView() == 1)
             gridLayoutManager = new GridLayoutManager(this, SPAN_COUNT_ONE);
         else
             gridLayoutManager = new GridLayoutManager(this, SPAN_COUNT_TWO);
-
         recyclerView.getItemAnimator().setChangeDuration(100);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setEmptyView(emptyView);
 
-
         arraylist = new ArrayList<>();
 
-        fav = (FloatingActionButton) findViewById(R.id.fav);
-
-        string1 = "s";
-        //creating the adapter
+        /**Creating Adapter*/
         adapter1 = new CustomAdapter(this, gridLayoutManager, R.layout.custom_listview, arraylist);
-        Adapter adapter = new Adapter(this, R.layout.custom_listview, arraylist);
+        recyclerView.setAdapter(adapter1);
+        adapter1.notifyDataSetChanged();
+
+        fav = (FloatingActionButton) findViewById(R.id.fav);
+        string1 = "s";
+
         File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Screen Recording");
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
             }
         }
+
         permissions();
-        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        width = display.getWidth();
-        height = display.getHeight();
+        configureDisplay();
 
         fav.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,28 +231,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        cms = metrics.densityDpi;
-        width = metrics.widthPixels;
-        Resources resources = getResources();
-        int id = resources.getIdentifier("config_showNavigationBar", "bool", "android");
-        if (id > 0) {
-            height = metrics.heightPixels + getNavigationBarHeight();
-        } else {
-            height = metrics.heightPixels;
-        }
+
+        /**initialize Media Recorder*/
         mediaRecorder = new MediaRecorder();
         mediaPM = (MediaProjectionManager) getSystemService
                 (Context.MEDIA_PROJECTION_SERVICE);
+
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         StartRecording(getIntent());
 
+        /**Power Manager*/
         PowerManager mgr = (PowerManager) getSystemService(Context.POWER_SERVICE);
         boolean wakeUpFlag = false;
         PowerManager.WakeLock wakeLock = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "screenrecorder::MyWakelockTag");
 //        wakeLock.acquire();
-
         if (!mgr.isInteractive()) {
             if (sharedPref.loadScreenState()) {
                 wakeLock.release();
@@ -269,7 +253,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-        // ShakeDetector initialization
+
+        /**ShakeDetector initialization*/
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -285,7 +270,6 @@ public class MainActivity extends AppCompatActivity {
                 if (sharedPref.loadShakeState()) {
                     fav.performClick();
                     //Toast.makeText(MainActivity.this, "Shaked", Toast.LENGTH_SHORT).show();
-
                     //toStart
 //                    mediaProjection();
 //                    recorderFormat();
@@ -301,6 +285,34 @@ public class MainActivity extends AppCompatActivity {
     public void checkIfRecyclerViewIsEmpty() {
         if (adapter1.getItemCount() <= 0) {
             recyclerView.setEmptyView(emptyView);
+        }
+    }
+
+    private void configureDisplay() {
+        /**Display Manager*/
+        final int version = android.os.Build.VERSION.SDK_INT;
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        if (version >= 13) {
+            Point size = new Point();
+            display.getSize(size);
+            width = size.x;
+            height = size.y;
+        } else {
+            width = display.getWidth();
+            height = display.getHeight();
+        }
+
+        /**Display Metrics*/
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        densityDPI = metrics.densityDpi;
+        width = metrics.widthPixels;
+        Resources resources = getResources();
+        int id = resources.getIdentifier("config_showNavigationBar", "bool", "android");
+        if (id > 0) {
+            height = metrics.heightPixels + getNavigationBarHeight();
+        } else {
+            height = metrics.heightPixels;
         }
     }
 
@@ -340,10 +352,6 @@ public class MainActivity extends AppCompatActivity {
         string = formatter.format(now);
     }
 
-    public Bitmap createThumbnailFromPath(String filePath) {
-        return ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Images.Thumbnails.MINI_KIND);
-    }
-
     public void filePath() {
         arraylist.clear();
         listString = new ArrayList<String>();
@@ -358,7 +366,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
         for (int i = 0; i < list.length; i++) {
             listString.add(list[i].getName());
             String filepath = Environment.getExternalStorageDirectory() + "/Screen Recording/" + list[i].getName();
@@ -375,26 +382,8 @@ public class MainActivity extends AppCompatActivity {
             }
             arraylist.add(new Item("Video.png", list[i].getName(), "" + timeFormat(aLong), "Size : " + fileSize(length)));
 
-            adapter1 = new CustomAdapter(this, gridLayoutManager, R.layout.custom_listview, arraylist);
-            final Adapter adapter = new Adapter(this, R.layout.custom_listview, arraylist);
-            //attaching adapter to the listview
-//            listview.setAdapter(adapter);
-            recyclerView.setAdapter(adapter1);
             adapter1.notifyDataSetChanged();
         }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, listString);
-//        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-//                Intent intent = new Intent(Intent.ACTION_VIEW);
-//                Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
-//                intent.setDataAndType(uri, "video/*");
-//                startActivity(intent);
-//            }
-//        });
-
 
     }
 
@@ -417,7 +406,6 @@ public class MainActivity extends AppCompatActivity {
                     channelId, channelName, importance);
             notificationManager.createNotificationChannel(mChannel);
         }
-
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Screen Recorder")
@@ -542,7 +530,7 @@ public class MainActivity extends AppCompatActivity {
 
     private VirtualDisplay createVirtualDisplay() {
         return mediaProj.createVirtualDisplay("MainActivity",
-                width, height, cms,
+                width, height, densityDPI,
                 DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
                 mediaRecorder.getSurface(), null /*Callbacks*/, null
                 /*Handler*/);
@@ -561,8 +549,7 @@ public class MainActivity extends AppCompatActivity {
             mediaRecorder.setVideoSize(width, height);
             mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            mediaRecorder.setProfile(profile);
-            mediaRecorder.setVideoEncodingBitRate(profile.videoBitRate);
+            mediaRecorder.setVideoEncodingBitRate(sharedPref.loadVrateValue() * 1024 * 1024);
             mediaRecorder.setCaptureRate(sharedPref.loadFrateValue());
             mediaRecorder.setVideoFrameRate(sharedPref.loadFrateValue());
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
@@ -641,7 +628,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.about:
-                aboutDialog();
+                AboutDialog.aboutDialog(this);
                 return true;
 
             case R.id.Change:
@@ -711,97 +698,6 @@ public class MainActivity extends AppCompatActivity {
                 checkIfRecyclerViewIsEmpty();
             }
         });
-    }
-
-
-    public void aboutDialog() {
-        final Dialog dialog = new Dialog(MainActivity.this);
-        View mylayout = LayoutInflater.from(this).inflate(R.layout.layout_about, null);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(mylayout);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        Button dissmiss = (Button) dialog.findViewById(R.id.dissmiss);
-        dissmiss.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-
-    }
-
-    public void delDialog() {
-        final Dialog dialog = new Dialog(this);
-        View mylayout = LayoutInflater.from(this).inflate(R.layout.custom_delete_dialog, null);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(mylayout);
-
-        TextView title = (TextView) dialog.findViewById(R.id.title);
-        TextView desc = (TextView) dialog.findViewById(R.id.desc);
-
-        final SparseBooleanArray selected = adapter1
-                .getSelectedIds();//Get selected ids
-
-        if (selected.size() == adapter1.getItemCount()) {
-            title.setText("Confirm delete All");
-            desc.setText("Are you sure you want delete all video files!");
-        } else {
-            title.setText("Confirm delete");
-            desc.setText("delete " + selected.size() + " video files");
-        }
-
-        Button btnNo = (Button) dialog.findViewById(R.id.btnNo);
-        Button btnYes = (Button) dialog.findViewById(R.id.btnYes);
-
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("RestrictedApi")
-            @Override
-            public void onClick(View v) {
-
-                //Loop all selected ids
-                for (int i = (selected.size() - 1); i >= 0; i--) {
-                    if (selected.valueAt(i)) {
-                        //If current id is selected remove the item via key
-                        File fdelete = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(selected.keyAt(i)));
-                        fdelete.delete();
-                        arraylist.remove(selected.keyAt(i));
-                        adapter1.notifyDataSetChanged();//notify adapter
-                        RecyclerAdapter();
-                        //Snackbar.make(view, selected.size() + " item deleted.", Snackbar.LENGTH_LONG).show();
-                    }
-                }
-
-                /** for full Directory delete */
-//                File dir = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/");
-//                if (dir.isDirectory()) {
-//                    String[] children = dir.list();
-//                    for (int i = 0; i < children.length; i++) {
-//                        new File(dir, children[i]).delete();
-//                    }
-//                }
-                adapter1.notifyDataSetChanged();
-                RecyclerAdapter();
-                Toast.makeText(MainActivity.this, selected.size() + " files are deleted successfully",
-                        Toast.LENGTH_LONG).show();
-                mActionMode.finish();
-                dialog.dismiss();
-            }
-        });
-
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.show();
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -954,7 +850,6 @@ public class MainActivity extends AppCompatActivity {
 //                    Uri sUri = Uri.fromFile(file);
 //                    shareFiles.add(sUri);
 //                }
-
 //                shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, shareFiles);
 
                 shareIntent.putExtra(Intent.EXTRA_STREAM, uri);

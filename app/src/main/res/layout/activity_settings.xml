@@ -23,8 +23,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
@@ -32,8 +30,9 @@
                     android:id="@+id/quality"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:background="?attr/selectableItemBackground"
                     android:clickable="true"
+                    android:padding="15dp"
                     android:text="Quality"
                     android:textColor="@color/textColor"
                     android:textSize="22dp" />
@@ -42,10 +41,9 @@
                     android:id="@+id/rSetting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:clickable="true"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="15dp"
                     android:text="Record Settings"
                     android:textColor="@color/textColor"
                     android:textSize="22dp" />
@@ -54,11 +52,10 @@
                     android:id="@+id/controls"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:text="Controls"
+                    android:padding="15dp"
                     android:textColor="@color/textColor"
                     android:textSize="22dp" />
 
@@ -72,20 +69,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-
-                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:clickable="true"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="15dp"
                     android:text="Rate Us Now"
                     android:textColor="@color/textColor"
                     android:textSize="22dp" />
@@ -94,10 +87,9 @@
                     android:id="@+id/checkUpdates"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="15dp"
                     android:clickable="true"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:text="Check For Update"
                     android:textColor="@color/textColor"
                     android:textSize="22dp" />
@@ -106,10 +98,9 @@
                     android:id="@+id/tc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="15dp"
                     android:clickable="true"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:text="Term And conditions"
                     android:textColor="@color/textColor"
                     android:textSize="22dp" />
@@ -118,10 +109,9 @@
                     android:id="@+id/pp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="15dp"
                     android:clickable="true"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:text="Privacy Policies"
                     android:textColor="@color/textColor"
                     android:textSize="22dp" />
@@ -130,10 +120,9 @@
                     android:id="@+id/feedback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="15dp"
                     android:clickable="true"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:text="Give Feedback"
                     android:textColor="@color/textColor"
                     android:textSize="22dp" />
@@ -142,10 +131,9 @@
                     android:id="@+id/more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="15dp"
                     android:clickable="true"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:text="More Apps"
                     android:textColor="@color/textColor"
                     android:textSize="22dp" />
