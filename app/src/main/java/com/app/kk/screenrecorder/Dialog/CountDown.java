@@ -28,16 +28,16 @@ public class CountDown {
         dialog.setCancelable(true);
         dialog.setContentView(mylayout);
 
-        int i = sharedPref.loadTimerText();
+        int i = sharedPref.loadTimerText() + 1;
         final TextView tim = dialog.findViewById(R.id.tim);
 //        Button cancel = dialog.findViewById(R.id.cancel);
 
         final CountDownTimer downTimer = new CountDownTimer(1000 * i, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                String v = String.format("%02d", millisUntilFinished / 60000);
+//                String v = String.format("%02d", millisUntilFinished / 60000);
                 int va = (int) ((millisUntilFinished % 60000) / 1000);
-                tim.setText(v + ":" + String.format("%02d", va));
+                tim.setText("" + String.format("%01d", va));
             }
 
             public void onFinish() {
@@ -48,6 +48,7 @@ public class CountDown {
         };
         downTimer.start();
 
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation2;
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
         dialog.show();
 
