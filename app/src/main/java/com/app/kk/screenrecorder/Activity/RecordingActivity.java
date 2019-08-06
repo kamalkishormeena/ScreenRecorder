@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
@@ -23,8 +22,6 @@ import com.app.kk.screenrecorder.SharedPref;
 
 import java.io.File;
 
-import static com.app.kk.screenrecorder.Activity.MainActivity.listString;
-
 public class RecordingActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -41,7 +38,7 @@ public class RecordingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recording_settings);
+        setContentView(R.layout.activity_settings_recording);
 
         sharedPref = new SharedPref(this);
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg"
     android:orientation="vertical"
-    tools:context=".Activity.ControlsActivity">
+    tools:context=".Activity.RecordingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,30 +23,28 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:paddingTop="20dp"
                 android:paddingLeft="20dp"
-                android:text="Controls"
+                android:layout_marginBottom="10dp"
+                android:text="Recording"
                 android:textColor="@color/color2"
                 android:textSize="25dp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
-
             <LinearLayout
-                android:id="@+id/shake"
+                android:id="@+id/Audio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
                 android:padding="20dp"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/s1"
+                    android:id="@+id/sAudio"
                     style="@style/Switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Start Recording on Shake"
+                    android:text="Record Audio"
                     android:textSize="22dp" />
 
                 <LinearLayout
@@ -55,47 +53,10 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/s1Desc"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Shaking your device won't do anything special."
-                    android:textSize="18dp" />
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight=".2" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/screen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-
-                android:orientation="vertical">
-
-                <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/s2"
-                    style="@style/Switch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Stop on Screen Off"
-                    android:textSize="22dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/s2Desc"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="When your screen is turned off, any active screen recording will stop"
+                        android:text="Audio will not be recorded during capture. Note that Google does not allow internal audio to be recorded, only from your microphone."
                         android:textSize="18dp" />
 
                     <Space
@@ -104,6 +65,78 @@
                         android:layout_weight=".2" />
                 </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Countdown"
+                    android:textColor="@color/black"
+                    android:textSize="22dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/desc3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="3 second before recording begins"
+                        android:textSize="18dp" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".2" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/folder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:padding="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Recording Folder"
+                    android:textColor="@color/black"
+                    android:textSize="22dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Recording address"
+                        android:textSize="18dp" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".2" />
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

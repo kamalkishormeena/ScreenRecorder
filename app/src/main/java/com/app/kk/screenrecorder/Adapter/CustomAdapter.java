@@ -22,14 +22,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.app.kk.screenrecorder.Dialog.AdapterDeleteDialog;
+import com.app.kk.screenrecorder.Dialog.DeleteDialog;
 import com.app.kk.screenrecorder.Model.Item;
 import com.app.kk.screenrecorder.R;
 
@@ -125,8 +124,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.item_delete:
-                                AdapterDeleteDialog.delDialog(position, context, arraylist, CustomAdapter.this);
-                                //delDialog(position);
+                                DeleteDialog.adapterDelDialog(position, context, arraylist, CustomAdapter.this);
+                                //adapterDelDialog(position);
                                 return true;
 
                             case R.id.item_share:

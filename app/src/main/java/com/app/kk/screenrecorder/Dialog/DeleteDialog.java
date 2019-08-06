@@ -22,11 +22,11 @@ import java.util.List;
 
 import static com.app.kk.screenrecorder.Activity.MainActivity.listString;
 
-public class AdapterDeleteDialog {
+public class DeleteDialog {
 
     private MainActivity mainActivity;
 
-    public static void delDialog(final int position, final Context context, final List<Item> arraylist, final CustomAdapter adapter) {
+    public static void adapterDelDialog(final int position, final Context context, final List<Item> arraylist, final CustomAdapter adapter) {
         final Dialog dialog = new Dialog(context);
         View mylayout = LayoutInflater.from(context).inflate(R.layout.custom_delete_dialog, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

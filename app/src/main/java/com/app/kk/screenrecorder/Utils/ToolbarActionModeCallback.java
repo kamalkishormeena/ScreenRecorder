@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.app.kk.screenrecorder.Activity.MainActivity;
 import com.app.kk.screenrecorder.Adapter.CustomAdapter;
-import com.app.kk.screenrecorder.Dialog.AdapterDeleteDialog;
+import com.app.kk.screenrecorder.Dialog.DeleteDialog;
 import com.app.kk.screenrecorder.Model.Item;
 import com.app.kk.screenrecorder.R;
 
@@ -57,7 +57,7 @@ public class ToolbarActionModeCallback implements ActionMode.Callback {
                     ((Animatable) drawable).start();
                 }
                 //Delete Dialog
-                AdapterDeleteDialog.MainDelDialog(context, recyclerView_adapter, message_models, mainActivity);
+                DeleteDialog.MainDelDialog(context, recyclerView_adapter, message_models, mainActivity);
                 break;
             case R.id.action_share:
 //                mainActivity.shareRows();

@@ -40,7 +40,7 @@ public class QualityActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         sharedPref = new SharedPref(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quality);
+        setContentView(R.layout.activity_settings_quality);
 
         toolbar = findViewById(R.id.toolbar2);
         toolbar.setTitle("Settings");

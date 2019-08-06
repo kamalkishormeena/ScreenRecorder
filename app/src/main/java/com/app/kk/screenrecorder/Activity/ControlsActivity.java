@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +28,7 @@ public class ControlsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         sharedPref = new SharedPref(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_controls);
+        setContentView(R.layout.activity_settings_controls);
 
         toolbar = findViewById(R.id.toolbar2);
         toolbar.setTitle("Settings");

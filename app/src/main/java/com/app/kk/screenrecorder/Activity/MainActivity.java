@@ -424,7 +424,6 @@ public class MainActivity extends AppCompatActivity {
                         PendingIntent.getActivity(this, 0, yesIntent, PendingIntent.FLAG_UPDATE_CURRENT)));
         notificationManager.notify(notificationId, mBuilder.build());
         //startActivity(new Intent(this, MainActivity.class));
-
     }
 
     @Override
@@ -498,16 +497,23 @@ public class MainActivity extends AppCompatActivity {
         } else {
             string1 = "t";
             fav.setImageResource(R.drawable.ic_stop);
-            CountDown.startTimer(this, MainActivity.this);
-//            notification();
-//            activityStart();
-
+            if (sharedPref.loadTimerText() == 0) {
+                notification();
+                activityStart();
+            } else {
+                CountDown.startTimer(this, MainActivity.this);
+            }
         }
-        mMediaProjectionCallback = new MediaProjectionCallback();
-        mMediaProjection = mProjectionManager.getMediaProjection(resultCode, data);
-//            mMediaProjection.registerCallback(mMediaProjectionCallback, null);
-//            mVirtualDisplay = createVirtualDisplay();
-//            mMediaRecorder.start();
+        if (sharedPref.loadTimerText() == 0) {
+            mMediaProjectionCallback = new MediaProjectionCallback();
+            mMediaProjection = mProjectionManager.getMediaProjection(resultCode, data);
+            mMediaProjection.registerCallback(mMediaProjectionCallback, null);
+            mVirtualDisplay = createVirtualDisplay();
+            mMediaRecorder.start();
+        } else {
+            mMediaProjectionCallback = new MediaProjectionCallback();
+            mMediaProjection = mProjectionManager.getMediaProjection(resultCode, data);
+        }
     }
 
     public void activityStart() {
@@ -517,9 +523,12 @@ public class MainActivity extends AppCompatActivity {
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startMain);
-        mMediaProjection.registerCallback(mMediaProjectionCallback, null);
-        mVirtualDisplay = createVirtualDisplay();
-        mMediaRecorder.start();
+        /*Extra*/
+        if (sharedPref.loadTimerText() != 0) {
+            mMediaProjection.registerCallback(mMediaProjectionCallback, null);
+            mVirtualDisplay = createVirtualDisplay();
+            mMediaRecorder.start();
+        }
     }
 
     private void mediaProjection() {
@@ -714,7 +723,7 @@ public class MainActivity extends AppCompatActivity {
             // this is when onPause() is called when the shake state has not changed
         }
         // Add the following line to unregister the Sensor Manager onPause
-        mSensorManager.unregisterListener(mShakeDetector);
+//        mSensorManager.unregisterListener(mShakeDetector);
         super.onPause();
     }
 
@@ -735,6 +744,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         destroyMediaProjection();
@@ -742,6 +756,7 @@ public class MainActivity extends AppCompatActivity {
             unregisterReceiver(mReceiver);
             mReceiver = null;
         }
+        mSensorManager.unregisterListener(mShakeDetector);
     }
 
     private class MediaProjectionCallback extends MediaProjection.Callback {
