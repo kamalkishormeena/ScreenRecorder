@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -163,6 +164,49 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
         }
     }
 
+    /***
+     * Methods required for do selections, remove selections, etc.
+     */
+
+    //Toggle selection methods
+    public void toggleSelection(int position) {
+        selectView(position, !mSelectedItemsIds.get(position));
+    }
+
+    public void removeItem(int pos) {
+        notifyItemRemoved(pos);
+        notifyItemRangeChanged(pos, arraylist.size());
+    }
+
+    //Remove selected selections
+    public void removeSelection() {
+        mSelectedItemsIds = new SparseBooleanArray();
+        notifyDataSetChanged();
+    }
+
+    //Put or delete selected position into SparseBooleanArray
+    public void selectView(int position, boolean value) {
+        if (value)
+            mSelectedItemsIds.put(position, value);
+        else
+            mSelectedItemsIds.delete(position);
+
+        notifyDataSetChanged();
+    }
+
+    //Get total selected count
+    public int getSelectedCount() {
+        return mSelectedItemsIds.size();
+    }
+
+    //Return all selected ids
+    public SparseBooleanArray getSelectedIds() {
+        return mSelectedItemsIds;
+    }
+
+    /**
+     * Dialogs
+     */
     private void Rename(final int position) {
         final Dialog dialog = new Dialog(context);
         View mylayout = LayoutInflater.from(context).inflate(R.layout.custome_rename_dialg, null);
@@ -213,65 +257,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
         dialog.show();
     }
 
-    private void playVid(final int position) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
-        intent.setDataAndType(uri, "video/*");
-        context.startActivity(intent);
-    }
-
-    private void shareIntent(final int position) {
-        File file = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
-        Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.setType("video/*");
-        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, listString.get(position));
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        context.startActivity(Intent.createChooser(shareIntent, "Share with"));
-    }
-
-    /***
-     * Methods required for do selections, remove selections, etc.
-     */
-
-    //Toggle selection methods
-    public void toggleSelection(int position) {
-        selectView(position, !mSelectedItemsIds.get(position));
-    }
-
-    public void removeItem(int pos) {
-        notifyItemRemoved(pos);
-        notifyItemRangeChanged(pos, arraylist.size());
-    }
-
-    //Remove selected selections
-    public void removeSelection() {
-        mSelectedItemsIds = new SparseBooleanArray();
-        notifyDataSetChanged();
-    }
-
-    //Put or delete selected position into SparseBooleanArray
-    public void selectView(int position, boolean value) {
-        if (value)
-            mSelectedItemsIds.put(position, value);
-        else
-            mSelectedItemsIds.delete(position);
-
-        notifyDataSetChanged();
-    }
-
-    //Get total selected count
-    public int getSelectedCount() {
-        return mSelectedItemsIds.size();
-    }
-
-    //Return all selected ids
-    public SparseBooleanArray getSelectedIds() {
-        return mSelectedItemsIds;
-    }
-
     class Viewholder extends RecyclerView.ViewHolder {
 
         public ImageView menuBtn;
@@ -298,6 +283,25 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
             size.setText(siz);
 
         }
+    }
+
+    private void playVid(final int position) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri.parse(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
+        intent.setDataAndType(uri, "video/*");
+        context.startActivity(intent);
+    }
+
+    private void shareIntent(final int position) {
+        File file = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(position));
+        Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("video/*");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, listString.get(position));
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        context.startActivity(Intent.createChooser(shareIntent, "Share with"));
     }
 
 }

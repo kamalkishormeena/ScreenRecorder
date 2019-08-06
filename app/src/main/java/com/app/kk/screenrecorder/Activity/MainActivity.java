@@ -1,7 +1,6 @@
 package com.app.kk.screenrecorder.Activity;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.content.res.Resources;
@@ -47,9 +46,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -75,6 +72,8 @@ import android.support.v7.widget.Toolbar;
 
 import com.app.kk.screenrecorder.Adapter.CustomAdapter;
 import com.app.kk.screenrecorder.Dialog.AboutDialog;
+import com.app.kk.screenrecorder.Dialog.CountDown;
+import com.app.kk.screenrecorder.Dialog.CountdownTask;
 import com.app.kk.screenrecorder.Dialog.RatingApp;
 import com.app.kk.screenrecorder.Interface.RecyclerClickListener;
 import com.app.kk.screenrecorder.Utils.RecyclerTouchListener;
@@ -101,13 +100,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int REQUEST_CODE = 1000;
     private int densityDPI;
-    private MediaProjectionManager mediaPM;
+    public TextView timer;
     private static int width;
     private static int height;
-    private MediaProjection mediaProj;
-    private VirtualDisplay virtualDisplay;
-    private MediaProjectionCallback mediaPCB;
-    private MediaRecorder mediaRecorder;
+    public LinearLayout timL1;
+    private MediaProjectionManager mProjectionManager;
+    private MediaProjection mMediaProjection;
+    private VirtualDisplay mVirtualDisplay;
     private static final SparseIntArray sArray = new SparseIntArray();
     private static final int crp = 10;
     //    private RecyclerView recyclerView;
@@ -137,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
 
     private View emptyView1;
     private GridLayoutManager gridLayoutManager;
+    private MediaProjectionCallback mMediaProjectionCallback;
+    private MediaRecorder mMediaRecorder;
+    private CountdownTask mCountdownTask;
 
     static {
         sArray.append(Surface.ROTATION_0, 90);
@@ -198,6 +200,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setEmptyView(emptyView);
 
+        timL1 = findViewById(R.id.timL1);
+        timer = (TextView) findViewById(R.id.timer);
+
         arraylist = new ArrayList<>();
 
         /**Creating Adapter*/
@@ -213,10 +218,8 @@ public class MainActivity extends AppCompatActivity {
             if (!mediaStorageDir.mkdirs()) {
             }
         }
-
         permissions();
         configureDisplay();
-
         fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (string1.equals("t")) {
                     notificationManager.cancel(1);
                     string1 = "s";
-                    fav.setImageResource(R.drawable.ic_recode);
+                    fav.setImageResource(R.drawable.ic_record);
                     stopRecording();
                     filePath();
                 }
@@ -233,13 +236,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /**initialize Media Recorder*/
-        mediaRecorder = new MediaRecorder();
-        mediaPM = (MediaProjectionManager) getSystemService
+        mMediaRecorder = new MediaRecorder();
+        mProjectionManager = (MediaProjectionManager) getSystemService
                 (Context.MEDIA_PROJECTION_SERVICE);
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         StartRecording(getIntent());
-
         /**Power Manager*/
         PowerManager mgr = (PowerManager) getSystemService(Context.POWER_SERVICE);
         boolean wakeUpFlag = false;
@@ -253,7 +255,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-
         /**ShakeDetector initialization*/
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
@@ -272,13 +273,11 @@ public class MainActivity extends AppCompatActivity {
                     //Toast.makeText(MainActivity.this, "Shaked", Toast.LENGTH_SHORT).show();
                     //toStart
 //                    mediaProjection();
-//                    recorderFormat();
-
+//                    initRecorder();
                 } else
                     Toast.makeText(MainActivity.this, "Please Activate This feature from Control Settings", Toast.LENGTH_SHORT).show();
             }
         });
-
         implementRecyclerViewClickListeners();
     }
 
@@ -440,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
                 case YES_ACTION:
                     notificationManager.cancel(1);
                     string1 = "s";
-                    fav.setImageResource(R.drawable.ic_recode);
+                    fav.setImageResource(R.drawable.ic_record);
                     stopRecording();
                     filePath();
                     break;
@@ -465,7 +464,7 @@ public class MainActivity extends AppCompatActivity {
                         crp);
             }
         } else {
-            recorderFormat();
+            initRecorder();
             mediaProjection();
         }
     }
@@ -473,12 +472,12 @@ public class MainActivity extends AppCompatActivity {
     public void stopRecording() {
         final MediaPlayer notify2 = MediaPlayer.create(this, R.raw.end);
         notify2.start();
-        mediaRecorder.stop();
-        mediaRecorder.reset();
+        mMediaRecorder.stop();
+        mMediaRecorder.reset();
         Toast.makeText(this, "File save in Your phone storage" + file + string + ".mp4",
                 Toast.LENGTH_LONG).show();
         Log.v(TAG, "Stopping Recording");
-        stopCheck();
+        stopScreenSharing();
         adapter1.notifyDataSetChanged();
     }
 
@@ -493,21 +492,22 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.cancel(1);
             filePath();
             string1 = "s";
-            fav.setImageResource(R.drawable.ic_recode);
+            fav.setImageResource(R.drawable.ic_record);
 
             return;
         } else {
             string1 = "t";
-            fav.setImageResource(R.drawable.ic_clear);
-            notification();
-            activityStart();
+            fav.setImageResource(R.drawable.ic_stop);
+            CountDown.startTimer(this, MainActivity.this);
+//            notification();
+//            activityStart();
 
         }
-        mediaPCB = new MediaProjectionCallback();
-        mediaProj = mediaPM.getMediaProjection(resultCode, data);
-        mediaProj.registerCallback(mediaPCB, null);
-        virtualDisplay = createVirtualDisplay();
-        mediaRecorder.start();
+        mMediaProjectionCallback = new MediaProjectionCallback();
+        mMediaProjection = mProjectionManager.getMediaProjection(resultCode, data);
+//            mMediaProjection.registerCallback(mMediaProjectionCallback, null);
+//            mVirtualDisplay = createVirtualDisplay();
+//            mMediaRecorder.start();
     }
 
     public void activityStart() {
@@ -517,64 +517,67 @@ public class MainActivity extends AppCompatActivity {
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startMain);
+        mMediaProjection.registerCallback(mMediaProjectionCallback, null);
+        mVirtualDisplay = createVirtualDisplay();
+        mMediaRecorder.start();
     }
 
     private void mediaProjection() {
-        if (mediaProj == null) {
-            startActivityForResult(mediaPM.createScreenCaptureIntent(), REQUEST_CODE);
+        if (mMediaProjection == null) {
+            startActivityForResult(mProjectionManager.createScreenCaptureIntent(), REQUEST_CODE);
             return;
         }
-        virtualDisplay = createVirtualDisplay();
-        mediaRecorder.start();
+        mVirtualDisplay = createVirtualDisplay();
+        mMediaRecorder.start();
     }
 
     private VirtualDisplay createVirtualDisplay() {
-        return mediaProj.createVirtualDisplay("MainActivity",
+        return mMediaProjection.createVirtualDisplay("MainActivity",
                 width, height, densityDPI,
                 DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                mediaRecorder.getSurface(), null /*Callbacks*/, null
+                mMediaRecorder.getSurface(), null /*Callbacks*/, null
                 /*Handler*/);
     }
 
-    private void recorderFormat() {
+    private void initRecorder() {
 
         format();
 
         try {
             CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            mediaRecorder.setOutputFile(Environment.getExternalStorageDirectory() + "/Screen Recording" + "/Screen Recording " + string + ".mp4");
-            mediaRecorder.setVideoSize(width, height);
-            mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            mediaRecorder.setVideoEncodingBitRate(sharedPref.loadVrateValue() * 1024 * 1024);
-            mediaRecorder.setCaptureRate(sharedPref.loadFrateValue());
-            mediaRecorder.setVideoFrameRate(sharedPref.loadFrateValue());
+            mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
+            mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mMediaRecorder.setOutputFile(Environment.getExternalStorageDirectory() + "/Screen Recording" + "/Screen Recording " + string + ".mp4");
+            mMediaRecorder.setVideoSize(width, height);
+            mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+            mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            mMediaRecorder.setVideoEncodingBitRate(sharedPref.loadVrateValue() * 1024 * 1024);
+            mMediaRecorder.setCaptureRate(sharedPref.loadFrateValue());
+            mMediaRecorder.setVideoFrameRate(sharedPref.loadFrateValue());
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             int orientation = sArray.get(rotation + 90);
-            mediaRecorder.setOrientationHint(orientation);
-            mediaRecorder.prepare();
+            mMediaRecorder.setOrientationHint(orientation);
+            mMediaRecorder.prepare();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void stopCheck() {
-        if (virtualDisplay == null) {
+    private void stopScreenSharing() {
+        if (mVirtualDisplay == null) {
             return;
         }
-        virtualDisplay.release();
+        mVirtualDisplay.release();
 
-        stopMediaProj();
+        destroyMediaProjection();
     }
 
-    private void stopMediaProj() {
-        if (mediaProj != null) {
-            mediaProj.unregisterCallback(mediaPCB);
-            mediaProj.stop();
-            mediaProj = null;
+    private void destroyMediaProjection() {
+        if (mMediaProjection != null) {
+            mMediaProjection.unregisterCallback(mMediaProjectionCallback);
+            mMediaProjection.stop();
+            mMediaProjection = null;
         }
         Log.i(TAG, "MediaProjection Stopped");
     }
@@ -731,27 +734,27 @@ public class MainActivity extends AppCompatActivity {
         mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
     }
 
-    private class MediaProjectionCallback extends MediaProjection.Callback {
-        @Override
-        public void onStop() {
-            mediaRecorder.stop();
-            mediaRecorder.reset();
-            Log.v(TAG, "Recording Stopped");
-
-            mediaProj = null;
-            stopCheck();
-        }
-
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stopMediaProj();
+        destroyMediaProjection();
         if (mReceiver != null) {
             unregisterReceiver(mReceiver);
             mReceiver = null;
         }
+    }
+
+    private class MediaProjectionCallback extends MediaProjection.Callback {
+        @Override
+        public void onStop() {
+            mMediaRecorder.stop();
+            mMediaRecorder.reset();
+            Log.v(TAG, "Recording Stopped");
+
+            mMediaProjection = null;
+            stopScreenSharing();
+        }
+
     }
 
 

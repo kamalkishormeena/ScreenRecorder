@@ -95,6 +95,7 @@ public class AdapterDeleteDialog {
             @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View v) {
+                /**Delete Rows*/
                 //Loop all selected ids
                 for (int i = (selected.size() - 1); i >= 0; i--) {
                     if (selected.valueAt(i)) {

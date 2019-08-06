@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedPref {
-    SharedPreferences uiSharedPref, shakeState, screenState, frate, fdesc, frateValue, view, vbrate, vbValue, vdesc;
+    SharedPreferences uiSharedPref, shakeState, screenState, frate, fdesc, frateValue, view, vbrate, vbValue, vdesc, timer, countDown;
 
     public SharedPref(Context context) {
         uiSharedPref = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
@@ -17,6 +17,8 @@ public class SharedPref {
         vbValue = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
         vdesc = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
         view = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
+        timer = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
+        countDown = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
     }
 
     /**
@@ -172,5 +174,33 @@ public class SharedPref {
     public String loadShaekDesc() {
         String value = shakeState.getString("shakeDesc", null);
         return value;
+    }
+
+    /**
+     * Timer
+     */
+    public void setFinishTimer(boolean b) {
+        SharedPreferences.Editor editor = timer.edit();
+        editor.putBoolean("FinishTimer", b);
+        editor.commit();
+    }
+
+    public Boolean loadFinishTimer() {
+        Boolean b = timer.getBoolean("FinishTimer", false);
+        return b;
+    }
+
+    /**
+     * Timer Text
+     */
+    public void setTimerText(int timer) {
+        SharedPreferences.Editor editor = countDown.edit();
+        editor.putInt("TimerValue", timer);
+        editor.commit();
+    }
+
+    public int loadTimerText() {
+        int timer = countDown.getInt("TimerValue", 3);
+        return timer;
     }
 }

@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:gravity="bottom|right"
-            android:src="@drawable/ic_recode"
+            android:src="@drawable/ic_record"
             android:visibility="visible"
             app:backgroundTint="@color/favColor"
             android:elevation="2dp"
