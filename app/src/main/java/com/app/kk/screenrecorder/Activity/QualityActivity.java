@@ -82,7 +82,7 @@ public class QualityActivity extends AppCompatActivity {
     private void frateDialog() {
 
         final Dialog dialog = new Dialog(this);
-        View mylayout = LayoutInflater.from(this).inflate(R.layout.custome_framerate_dialg, null);
+        View mylayout = LayoutInflater.from(this).inflate(R.layout.custom_dialog_framerate, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(mylayout);
@@ -141,7 +141,7 @@ public class QualityActivity extends AppCompatActivity {
     private void bitRateDialog() {
 
         final Dialog dialog = new Dialog(this);
-        View mylayout = LayoutInflater.from(this).inflate(R.layout.custom_bitrate_dialog, null);
+        View mylayout = LayoutInflater.from(this).inflate(R.layout.custom_dialog_bitrate, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(mylayout);

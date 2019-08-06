@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         arraylist = new ArrayList<>();
 
         /**Creating Adapter*/
-        adapter1 = new CustomAdapter(this, gridLayoutManager, R.layout.custom_listview, arraylist);
+        adapter1 = new CustomAdapter(this, gridLayoutManager, R.layout.custom_layout_list, arraylist);
         recyclerView.setAdapter(adapter1);
         adapter1.notifyDataSetChanged();
 

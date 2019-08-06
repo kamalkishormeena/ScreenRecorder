@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/setting_action_bar" />
+        <include layout="@layout/custom_appbar_settings" />
 
         <LinearLayout
             android:layout_width="match_parent"

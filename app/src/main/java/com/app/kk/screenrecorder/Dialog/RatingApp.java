@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.kk.screenrecorder.R;
@@ -59,7 +58,7 @@ public class RatingApp {
 
     private static void showRateDialog(final Context mContext, final SharedPreferences.Editor editor) {
         final Dialog dialog = new Dialog(mContext);
-        View mylayout = LayoutInflater.from(mContext).inflate(R.layout.custom_rating_layout, null);
+        View mylayout = LayoutInflater.from(mContext).inflate(R.layout.custom_dialog_rating, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(mylayout);

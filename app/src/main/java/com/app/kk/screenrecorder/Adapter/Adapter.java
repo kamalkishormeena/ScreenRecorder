@@ -197,7 +197,7 @@ public class Adapter extends ArrayAdapter<Item> {
 
     public void delDialog(final int position){
         final Dialog dialog = new Dialog(context);
-        View mylayout = LayoutInflater.from(context).inflate(R.layout.custom_delete_dialog, null);
+        View mylayout = LayoutInflater.from(context).inflate(R.layout.custom_dialog_delete, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(mylayout);

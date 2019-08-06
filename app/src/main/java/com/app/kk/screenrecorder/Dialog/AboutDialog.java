@@ -7,14 +7,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
-import com.app.kk.screenrecorder.Activity.MainActivity;
 import com.app.kk.screenrecorder.R;
 
 public class AboutDialog {
 
     public static void aboutDialog(Context mContext) {
         final Dialog dialog = new Dialog(mContext);
-        View mylayout = LayoutInflater.from(mContext).inflate(R.layout.layout_about, null);
+        View mylayout = LayoutInflater.from(mContext).inflate(R.layout.custom_dialog_about, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(mylayout);

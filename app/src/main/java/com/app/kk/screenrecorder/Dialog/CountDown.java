@@ -2,13 +2,10 @@ package com.app.kk.screenrecorder.Dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.kk.screenrecorder.Activity.MainActivity;
@@ -23,7 +20,7 @@ public class CountDown {
     public static void startTimer(Context context, final MainActivity mainActivity) {
         sharedPref = new SharedPref(context);
         final Dialog dialog = new Dialog(context);
-        View mylayout = LayoutInflater.from(context).inflate(R.layout.test, null);
+        View mylayout = LayoutInflater.from(context).inflate(R.layout.layout_countdown, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(mylayout);

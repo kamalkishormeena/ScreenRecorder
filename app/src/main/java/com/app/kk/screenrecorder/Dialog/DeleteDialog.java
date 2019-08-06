@@ -28,7 +28,7 @@ public class DeleteDialog {
 
     public static void adapterDelDialog(final int position, final Context context, final List<Item> arraylist, final CustomAdapter adapter) {
         final Dialog dialog = new Dialog(context);
-        View mylayout = LayoutInflater.from(context).inflate(R.layout.custom_delete_dialog, null);
+        View mylayout = LayoutInflater.from(context).inflate(R.layout.custom_dialog_delete, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(mylayout);
@@ -63,7 +63,7 @@ public class DeleteDialog {
 
     public static void MainDelDialog(final Context context, final CustomAdapter adapter1, final List<Item> arraylist, final MainActivity mainActivity) {
         final Dialog dialog = new Dialog(context);
-        View mylayout = LayoutInflater.from(context).inflate(R.layout.custom_delete_dialog, null);
+        View mylayout = LayoutInflater.from(context).inflate(R.layout.custom_dialog_delete, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(mylayout);

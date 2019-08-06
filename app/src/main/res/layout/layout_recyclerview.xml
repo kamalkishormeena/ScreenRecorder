@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contextClickable="true"
-        tools:listitem="@layout/custom_listview"
+        tools:listitem="@layout/custom_layout_list"
         android:divider="@null" />
 
     <LinearLayout

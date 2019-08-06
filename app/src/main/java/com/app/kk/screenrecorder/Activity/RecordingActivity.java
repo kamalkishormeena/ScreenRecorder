@@ -85,7 +85,7 @@ public class RecordingActivity extends AppCompatActivity {
 
     private void countDialog() {
         final Dialog dialog = new Dialog(this);
-        View mylayout = LayoutInflater.from(this).inflate(R.layout.custom_countdown_dialog, null);
+        View mylayout = LayoutInflater.from(this).inflate(R.layout.custom_dialog_countdown, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(mylayout);

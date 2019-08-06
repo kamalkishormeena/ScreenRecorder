@@ -14,14 +14,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/app_bar_main" />
+        <include layout="@layout/custom_appbar_main" />
 
 
-        <include layout="@layout/recyclerview_layout" />
+        <include layout="@layout/layout_recyclerview" />
 
     </LinearLayout>
 
-    <include layout="@layout/fav_layout" />
+    <include layout="@layout/layout_fav_button" />
 
     <LinearLayout
         android:id="@+id/timL1"

@@ -73,13 +73,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
     @NonNull
     @Override
     public Viewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-//        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_listview, viewGroup, false);
+//        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_layout_list, viewGroup, false);
 //        return new Viewholder(view);
         View view;
         if (i == VIEW_TYPE_BIG) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_listview, viewGroup, false);
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_layout_list, viewGroup, false);
         } else {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_grid, viewGroup, false);
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_layout_grid, viewGroup, false);
         }
         return new Viewholder(view, i);
 
@@ -208,7 +208,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
      */
     private void Rename(final int position) {
         final Dialog dialog = new Dialog(context);
-        View mylayout = LayoutInflater.from(context).inflate(R.layout.custome_rename_dialg, null);
+        View mylayout = LayoutInflater.from(context).inflate(R.layout.custom_dialog_rename, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(mylayout);
