@@ -50,9 +50,9 @@ public class DeleteDialog {
                 Toast.makeText(context, "Video deleted successfully",
                         Toast.LENGTH_LONG).show();
                 arraylist.remove(position);
-                adapter.notifyDataSetChanged();
-
-                adapter.removeItem(position);
+                adapter.remove(position);
+//                adapter.notifyDataSetChanged();
+//                adapter.removeItem(position);
                 dialog.dismiss();
             }
         });
@@ -103,7 +103,7 @@ public class DeleteDialog {
                         File fdelete = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/" + listString.get(selected.keyAt(i)));
                         fdelete.delete();
                         arraylist.remove(selected.keyAt(i));
-                        adapter1.notifyDataSetChanged();//notify adapter
+                        adapter1.remove(selected.keyAt(i));
                         mainActivity.RecyclerAdapter();
                         //Snackbar.make(view, selected.size() + " item deleted.", Snackbar.LENGTH_LONG).show();
                     }

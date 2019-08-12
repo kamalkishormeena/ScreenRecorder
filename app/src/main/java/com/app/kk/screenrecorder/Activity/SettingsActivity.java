@@ -38,6 +38,8 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(SettingsActivity.this, QualityActivity.class);
                 startActivity(myIntent);
+                overridePendingTransition(0, 0);
+
             }
         });
 
@@ -46,6 +48,8 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(SettingsActivity.this, RecordingActivity.class);
                 startActivity(myIntent);
+                overridePendingTransition(0, 0);
+
             }
         });
 
@@ -54,6 +58,8 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(SettingsActivity.this, ControlsActivity.class);
                 startActivity(myIntent);
+                overridePendingTransition(0, 0);
+
             }
         });
 

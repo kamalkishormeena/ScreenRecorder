@@ -29,7 +29,7 @@ public class RecordingActivity extends AppCompatActivity {
     File file;
     final int currentMax = 10;
     SwitchCompat audioSwitch;
-    TextView address, desc3, timertxt;
+    TextView address, desc3, desc1, timertxt;
     LinearLayout audio, count;
     SeekBar seekBar;
     SharedPref sharedPref;
@@ -54,10 +54,25 @@ public class RecordingActivity extends AppCompatActivity {
         folder = findViewById(R.id.folder);
         count = findViewById(R.id.count);
         desc3 = findViewById(R.id.desc3);
+        desc1 = findViewById(R.id.desc1);
 
         file = new File(Environment.getExternalStorageDirectory() + "/Screen Recording/");
         String add = file.getAbsolutePath();
         address.setText("" + add);
+
+        if (sharedPref.loadTimerText() != 0) {
+            desc3.setText(sharedPref.loadTimerText() + " second before recording begins");
+        } else {
+            desc3.setText(sharedPref.loadTimerText() + " second before recording begins");
+        }
+
+        if (sharedPref.loadMic()) {
+            audioSwitch.setChecked(true);
+            desc1.setText("Audio will be recorded from microphone during capture. Google does not allow apps to record internal audio");
+        } else {
+            audioSwitch.setChecked(false);
+            desc1.setText("Audio will not be recorded during capture. Note that Google does not allow internal audio to be recorded, only from your microphone.");
+        }
 
         audioSwitch.setClickable(false);
         audio.setOnClickListener(new View.OnClickListener() {
@@ -123,13 +138,12 @@ public class RecordingActivity extends AppCompatActivity {
             }
         });
 
-
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sharedPref.setTimerText(currentProgress);
                 Toast.makeText(getApplicationContext(), "" + currentProgress, Toast.LENGTH_LONG).show();
-
+                desc3.setText(sharedPref.loadTimerText() + " second before recording begins");
                 dialog.dismiss();
             }
         });
@@ -142,15 +156,22 @@ public class RecordingActivity extends AppCompatActivity {
             }
         });
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation3;
         dialog.show();
     }
 
     private void audioPermission() {
-        if (!audioSwitch.isChecked())
+        if (!audioSwitch.isChecked()) {
+            sharedPref.setMic(true);
             audioSwitch.setChecked(true);
-        else
+            Toast.makeText(this, "Mic On", Toast.LENGTH_LONG).show();
+            desc1.setText("Audio will be recorded from microphone during capture. Google does not allow apps to record internal audio");
+        } else {
             audioSwitch.setChecked(false);
+            sharedPref.setMic(false);
+            Toast.makeText(this, "Mic Off", Toast.LENGTH_LONG).show();
+            desc1.setText("Audio will not be recorded during capture. Note that Google does not allow internal audio to be recorded, only from your microphone.");
+        }
     }
 
     public void openFolder() {

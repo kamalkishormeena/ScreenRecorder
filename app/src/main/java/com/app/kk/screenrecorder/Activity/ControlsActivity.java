@@ -50,7 +50,7 @@ public class ControlsActivity extends AppCompatActivity {
 
         if (sharedPref.loadShakeState()) {
             s1.setChecked(true);
-            s1Desc.setText("Shaking your device will start screen recording automatically.");
+            s1Desc.setText("Shaking your device will start/stop screen recording automatically.");
         } else {
             s1.setChecked(false);
             s1Desc.setText("Shaking your device won't do anything special");
@@ -99,7 +99,7 @@ public class ControlsActivity extends AppCompatActivity {
         if (!s1.isChecked()) {
             s1.setChecked(true);
             sharedPref.setShakeState(true);
-            s1Desc.setText("Shaking your device will start screen recording automatically.");
+            s1Desc.setText("Shaking your device will start/stop screen recording automatically.");
             Toast.makeText(ControlsActivity.this, "Service Started", Toast.LENGTH_SHORT).show();
             //Start Service
             startService(intent);

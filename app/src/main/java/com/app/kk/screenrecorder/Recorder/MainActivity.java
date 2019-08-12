@@ -54,7 +54,7 @@ import com.app.kk.screenrecorder.Adapter.CustomAdapter;
 import com.app.kk.screenrecorder.Model.Item;
 import com.app.kk.screenrecorder.R;
 import com.app.kk.screenrecorder.SharedPref;
-import com.app.kk.screenrecorder.Utils.EmptyRecyclerView;
+import com.app.kk.screenrecorder.Utils.RecyclerView.EmptyRecyclerView;
 
 import java.io.File;
 import java.util.ArrayList;

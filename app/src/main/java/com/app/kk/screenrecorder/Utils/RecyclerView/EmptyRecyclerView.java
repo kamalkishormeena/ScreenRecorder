@@ -1,4 +1,4 @@
-package com.app.kk.screenrecorder.Utils;
+package com.app.kk.screenrecorder.Utils.RecyclerView;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

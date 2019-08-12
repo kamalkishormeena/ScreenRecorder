@@ -76,9 +76,9 @@ import com.app.kk.screenrecorder.Dialog.CountDown;
 import com.app.kk.screenrecorder.Dialog.CountdownTask;
 import com.app.kk.screenrecorder.Dialog.RatingApp;
 import com.app.kk.screenrecorder.Interface.RecyclerClickListener;
-import com.app.kk.screenrecorder.Utils.RecyclerTouchListener;
+import com.app.kk.screenrecorder.Utils.RecyclerView.RecyclerTouchListener;
 import com.app.kk.screenrecorder.Utils.ToolbarActionModeCallback;
-import com.app.kk.screenrecorder.Utils.EmptyRecyclerView;
+import com.app.kk.screenrecorder.Utils.RecyclerView.EmptyRecyclerView;
 import com.app.kk.screenrecorder.Model.Item;
 import com.app.kk.screenrecorder.R;
 import com.app.kk.screenrecorder.ShakeSensor.ScreenReceiver;
@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
 
     String string;
     List<Item> arraylist;
-    ListView listview;
     String string1 = "";
     FloatingActionButton fav;
     public static List<String> listString;
@@ -134,11 +133,9 @@ public class MainActivity extends AppCompatActivity {
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
 
-    private View emptyView1;
     private GridLayoutManager gridLayoutManager;
     private MediaProjectionCallback mMediaProjectionCallback;
     private MediaRecorder mMediaRecorder;
-    private CountdownTask mCountdownTask;
 
     static {
         sArray.append(Surface.ROTATION_0, 90);
@@ -380,7 +377,6 @@ public class MainActivity extends AppCompatActivity {
                 aLong = Long.parseLong(time);
             }
             arraylist.add(new Item("Video.png", list[i].getName(), "" + timeFormat(aLong), "Size : " + fileSize(length)));
-
             adapter1.notifyDataSetChanged();
         }
 
@@ -554,13 +550,18 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
-            mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+
+            if (sharedPref.loadMic()) {
+                mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            }
             mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
             mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             mMediaRecorder.setOutputFile(Environment.getExternalStorageDirectory() + "/Screen Recording" + "/Screen Recording " + string + ".mp4");
             mMediaRecorder.setVideoSize(width, height);
             mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-            mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            if (sharedPref.loadMic()) {
+                mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            }
             mMediaRecorder.setVideoEncodingBitRate(sharedPref.loadVrateValue() * 1024 * 1024);
             mMediaRecorder.setCaptureRate(sharedPref.loadFrateValue());
             mMediaRecorder.setVideoFrameRate(sharedPref.loadFrateValue());
@@ -733,7 +734,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         // only when shake turns on
         if (!ScreenReceiver.wasScreenOn) {
-
             // this is when onResume() is called due to a shake state change
             Log.e("MYAPP", "SCREEN TURNED ON");
         } else {
@@ -769,7 +769,6 @@ public class MainActivity extends AppCompatActivity {
             mMediaProjection = null;
             stopScreenSharing();
         }
-
     }
 
 

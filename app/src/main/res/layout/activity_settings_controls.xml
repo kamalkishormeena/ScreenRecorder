@@ -44,7 +44,7 @@
                     style="@style/Switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Start Recording on Shake"
+                    android:text="Start/Stop Recording on Shake"
                     android:textSize="22dp" />
 
                 <LinearLayout

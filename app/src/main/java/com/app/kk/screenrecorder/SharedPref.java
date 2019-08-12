@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedPref {
-    SharedPreferences uiSharedPref, shakeState, screenState, frate, fdesc, frateValue, view, vbrate, vbValue, vdesc, timer, countDown;
+    SharedPreferences uiSharedPref, shakeState, screenState, frate, fdesc, frateValue, view, vbrate, vbValue, vdesc, timer, mic, countDown;
 
     public SharedPref(Context context) {
         uiSharedPref = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
@@ -19,6 +19,8 @@ public class SharedPref {
         view = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
         timer = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
         countDown = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
+        mic = context.getSharedPreferences("filename", Context.MODE_PRIVATE);
+
     }
 
     /**
@@ -202,5 +204,19 @@ public class SharedPref {
     public int loadTimerText() {
         int timer = countDown.getInt("TimerValue", 3);
         return timer;
+    }
+
+    /**
+     * mic State
+     */
+    public void setMic(boolean state) {
+        SharedPreferences.Editor editor = mic.edit();
+        editor.putBoolean("MicOn", state);
+        editor.commit();
+    }
+
+    public Boolean loadMic() {
+        Boolean state = mic.getBoolean("MicOn", true);
+        return state;
     }
 }

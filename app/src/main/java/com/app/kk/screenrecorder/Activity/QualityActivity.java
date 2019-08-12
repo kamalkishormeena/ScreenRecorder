@@ -133,7 +133,7 @@ public class QualityActivity extends AppCompatActivity {
         });
 
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation3;
 
         dialog.show();
     }
@@ -192,7 +192,7 @@ public class QualityActivity extends AppCompatActivity {
         });
 
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation3;
 
         dialog.show();
     }
@@ -207,5 +207,12 @@ public class QualityActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, 0);
+
     }
 }

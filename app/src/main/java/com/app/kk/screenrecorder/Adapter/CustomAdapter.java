@@ -163,6 +163,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
         }
     }
 
+    public void insert(int position) {
+        notifyItemInserted(position);
+    }
+
+    public void remove(int position) {
+        notifyItemRemoved(position);
+    }
+
     /***
      * Methods required for do selections, remove selections, etc.
      */

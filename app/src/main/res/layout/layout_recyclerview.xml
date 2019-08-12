@@ -28,7 +28,7 @@
     <!--android:src="@drawable/ic_sort"/>-->
     <!--</LinearLayout>-->
 
-    <com.app.kk.screenrecorder.Utils.EmptyRecyclerView
+    <com.app.kk.screenrecorder.Utils.RecyclerView.EmptyRecyclerView
         android:id="@+id/listView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
