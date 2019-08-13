@@ -57,7 +57,7 @@ public class DeleteDialog {
             }
         });
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation3;
         dialog.show();
     }
 
@@ -125,7 +125,7 @@ public class DeleteDialog {
             }
         });
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation3;
         dialog.show();
     }
 }

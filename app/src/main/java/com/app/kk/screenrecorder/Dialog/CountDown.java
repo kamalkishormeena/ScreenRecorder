@@ -45,8 +45,8 @@ public class CountDown {
         };
         downTimer.start();
 
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation2;
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation3;
         dialog.show();
 
     }

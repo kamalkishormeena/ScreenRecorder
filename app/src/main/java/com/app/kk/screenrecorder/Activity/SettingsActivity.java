@@ -8,14 +8,18 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.app.kk.screenrecorder.Dialog.AboutDialog;
 import com.app.kk.screenrecorder.Dialog.RatingApp;
 import com.app.kk.screenrecorder.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    public TextView quality, rSettings, controls, rate;
+    public LinearLayout quality, rSettings, controls;
+    public TextView rate;
+
     private Toolbar toolbar;
 
     @Override
@@ -69,8 +73,6 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     @Override

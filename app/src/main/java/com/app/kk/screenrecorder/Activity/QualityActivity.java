@@ -213,6 +213,5 @@ public class QualityActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(0, 0);
-
     }
 }
