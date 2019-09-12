@@ -9,7 +9,7 @@
     android:paddingTop="5dp"
     android:paddingRight="5dp">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="190dp"
         android:layout_height="wrap_content"
@@ -85,5 +85,5 @@
                 android:src="@drawable/ic_more_vert" />
 
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

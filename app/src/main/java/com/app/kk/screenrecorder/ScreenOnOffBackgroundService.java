@@ -4,10 +4,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.app.kk.screenrecorder.ScreenOnOffReceiver;
+import androidx.annotation.Nullable;
+import android.util.Log;
 
 /**
  * Created by Jerry on 1/5/2018.

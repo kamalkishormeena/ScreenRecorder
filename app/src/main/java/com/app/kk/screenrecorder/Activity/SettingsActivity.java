@@ -1,24 +1,26 @@
 package com.app.kk.screenrecorder.Activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityOptionsCompat;
+
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.app.kk.screenrecorder.Dialog.AboutDialog;
-import com.app.kk.screenrecorder.Dialog.RatingApp;
 import com.app.kk.screenrecorder.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
     public LinearLayout quality, rSettings, controls;
-    public TextView rate;
+    public TextView rate, qua, con;
 
     private Toolbar toolbar;
 
@@ -32,6 +34,8 @@ public class SettingsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        con = findViewById(R.id.con);
+        qua = findViewById(R.id.qua);
         quality = findViewById(R.id.quality);
         rSettings = findViewById(R.id.rSetting);
         controls = findViewById(R.id.controls);
@@ -40,6 +44,16 @@ public class SettingsActivity extends AppCompatActivity {
         quality.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**Shared Element Code*/
+//                Intent in = new Intent(SettingsActivity.this, QualityActivity.class);
+////                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(SettingsActivity.this, quality,"qua");
+//
+//                Pair[] pairs = new Pair[1];
+//                pairs[0] = new Pair<View, String>(quality, "quality");
+//                pairs[0] = new Pair<View, String>(qua, "qua");
+//                ActivityOptions activityOptions = ActivityOptions.makeSceneTransitionAnimation(SettingsActivity.this, pairs);
+//                startActivity(in,activityOptions.toBundle());
+//
                 Intent myIntent = new Intent(SettingsActivity.this, QualityActivity.class);
                 startActivity(myIntent);
                 overridePendingTransition(0, 0);

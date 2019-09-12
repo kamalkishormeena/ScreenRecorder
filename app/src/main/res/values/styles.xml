@@ -59,5 +59,9 @@
         <item name="colorAccent">@color/btnColor</item>
     </style>
 
+    <style name="settings" parent="AppTheme">
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
 
 </resources>

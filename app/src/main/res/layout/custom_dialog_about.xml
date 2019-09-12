@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp" />
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view"
@@ -93,7 +93,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="15dp" />
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <ImageView
         android:layout_width="80dp"

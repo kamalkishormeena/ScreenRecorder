@@ -1,7 +1,7 @@
 package com.app.kk.screenrecorder.Recording;
 
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class RecordingActivity extends AppCompatActivity {

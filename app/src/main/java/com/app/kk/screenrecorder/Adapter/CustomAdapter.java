@@ -9,11 +9,12 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -94,7 +95,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
 
         int color = R.color.select;
         if (mSelectedItemsIds.get(position)) viewholder.lc1
-                .setBackground(new ColorDrawable(ContextCompat.getColor(context, color)));
+                .setBackground(ContextCompat.getDrawable(context, R.drawable.cardbg_selected));
+//                .setBackground(new ColorDrawable(ContextCompat.getColor(context, color)));
         else viewholder.lc1
                 .setBackground(ContextCompat.getDrawable(context, R.drawable.cardbg));
 

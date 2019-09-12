@@ -29,6 +29,7 @@
         <activity
             android:name=".Activity.SettingsActivity"
             android:parentActivityName=".Activity.MainActivity"
+            android:theme="@style/settings"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.MainActivity"
@@ -53,14 +54,16 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ControlsActivity"
+            android:theme="@style/settings"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.QualityActivity"
+            android:theme="@style/settings"
             android:parentActivityName=".Activity.SettingsActivity"
             android:screenOrientation="portrait" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">

@@ -13,11 +13,14 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.PowerManager;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
-import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.RequiresApi;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
+import androidx.core.content.FileProvider;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.Manifest;
 import android.content.Context;
@@ -30,12 +33,13 @@ import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.view.ActionMode;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -48,7 +52,6 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,14 +69,14 @@ import java.util.concurrent.TimeUnit;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.support.v4.app.NotificationCompat.Action;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.widget.Toolbar;
+
+import androidx.core.app.NotificationCompat.Action;
+import androidx.core.app.NotificationCompat;
+import androidx.appcompat.widget.Toolbar;
 
 import com.app.kk.screenrecorder.Adapter.CustomAdapter;
 import com.app.kk.screenrecorder.Dialog.AboutDialog;
 import com.app.kk.screenrecorder.Dialog.CountDown;
-import com.app.kk.screenrecorder.Dialog.CountdownTask;
 import com.app.kk.screenrecorder.Dialog.RatingApp;
 import com.app.kk.screenrecorder.Interface.RecyclerClickListener;
 import com.app.kk.screenrecorder.Utils.RecyclerView.RecyclerTouchListener;
@@ -478,6 +481,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode != REQUEST_CODE) {
             Log.e(TAG, "Unknown request code: " + requestCode);
             return;
