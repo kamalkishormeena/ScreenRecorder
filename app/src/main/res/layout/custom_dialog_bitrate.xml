@@ -35,7 +35,7 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="450dp">
 
                 <RadioGroup
                     android:id="@+id/rg"

@@ -33,37 +33,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contextClickable="true"
-        tools:listitem="@layout/custom_layout_list"
-        android:divider="@null" />
+        android:divider="@null"
+        tools:listitem="@layout/custom_layout_list" />
 
-    <LinearLayout
+    <include
         android:id="@+id/emptyView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:background="@color/bg"
-        android:orientation="vertical"
-        android:padding="20dp">
+        layout="@layout/layout_empty2" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/emptyView"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:background="@color/bg"-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:padding="20dp">-->
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:layout_marginTop="0dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/undraw_empty_xct9" />
+    <!--        <RelativeLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content">-->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="330dp"
-                android:gravity="center"
-                android:text="You have no video recorded\nClick on record button to start screen recording"
-                android:textSize="20dp" />
-        </RelativeLayout>
-    </LinearLayout>
+    <!--            <ImageView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="400dp"-->
+    <!--                android:layout_marginTop="0dp"-->
+    <!--                android:scaleType="fitCenter"-->
+    <!--                android:src="@drawable/undraw_empty_xct9" />-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginTop="330dp"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="You have no video recorded\nClick on record button to start screen recording"-->
+    <!--                android:textSize="20dp" />-->
+    <!--        </RelativeLayout>-->
+    <!--    </LinearLayout>-->
 
 </RelativeLayout>

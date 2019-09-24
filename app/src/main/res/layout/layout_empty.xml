@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/emptyView"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/emptyView1"
-    android:background="@color/bg"
     android:layout_gravity="center"
+    android:background="@color/bg"
     android:orientation="vertical"
     android:padding="20dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:src="@drawable/undraw_empty_xct9"
-        android:layout_marginTop="0dp"
-        android:scaleType="fitCenter"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_marginTop="330dp"
-        android:gravity="center"
-        android:text="You have no video recorded\nClick on record button to start screen recording"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginTop="0dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/undraw_empty_xct9" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="330dp"
+            android:gravity="center"
+            android:text="You have no video recorded\nClick on record button to start screen recording"
+            android:textSize="20dp" />
     </RelativeLayout>
 </LinearLayout>

@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
@@ -127,7 +128,9 @@ public class MainActivity extends AppCompatActivity {
     private NotificationManager notificationManager;
     private Toolbar toolbar;
 
-    LinearLayout emptyView;
+    //    LinearLayout emptyView;
+    ConstraintLayout emptyView;
+
 
     CustomAdapter adapter1;
     SharedPref sharedPref;
@@ -404,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
                     channelId, channelName, importance);
             notificationManager.createNotificationChannel(mChannel);
         }
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
+        @SuppressLint("WrongConstant") NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Screen Recorder")
                 .setContentText("Recoding")

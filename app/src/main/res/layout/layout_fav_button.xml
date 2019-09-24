@@ -1,39 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/exit_fullscreen"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:elevation="2dp"
+        android:focusable="true"
         android:gravity="bottom|right"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:src="@drawable/ic_record"
+        android:visibility="visible"
+        app:backgroundTint="@color/favColor"
+        app:elevation="3dp"
+        app:fabSize="auto"
+        app:layout_anchorGravity="bottom|right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:rippleColor="@android:color/transparent"
+        app:useCompatPadding="true" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_margin="10dp"
-            android:id="@+id/fav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:gravity="bottom|right"
-            android:src="@drawable/ic_record"
-            android:visibility="visible"
-            app:backgroundTint="@color/favColor"
-            android:elevation="2dp"
-            android:focusable="true"
-            app:fabSize="auto"
-            app:elevation="3dp"
-            app:layout_anchorGravity="bottom|right"
-            app:useCompatPadding="true"
-            app:rippleColor="@android:color/transparent"
-            />
-
-    </LinearLayout>
-
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
