@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
@@ -13,16 +13,14 @@
         android:clickable="true"
         android:elevation="2dp"
         android:focusable="true"
-        android:gravity="bottom|right"
+        android:layout_gravity="bottom|right"
         android:src="@drawable/ic_record"
         android:visibility="visible"
         app:backgroundTint="@color/favColor"
         app:elevation="3dp"
         app:fabSize="auto"
         app:layout_anchorGravity="bottom|right"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="@android:color/transparent"
         app:useCompatPadding="true" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

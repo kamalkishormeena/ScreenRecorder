@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -159,6 +160,34 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
             return arraylist.size();
     }
 
+    class Viewholder extends RecyclerView.ViewHolder {
+
+        public ImageView menuBtn;
+        private TextView title;
+        private TextView duration;
+        private TextView size;
+        private ImageView vidImage;
+        private LinearLayout lc1;
+
+        public Viewholder(@NonNull View itemView, int i) {
+            super(itemView);
+            lc1 = itemView.findViewById(R.id.lc1);
+            vidImage = itemView.findViewById(R.id.vidImage);
+            title = itemView.findViewById(R.id.vidTitle);
+            duration = itemView.findViewById(R.id.vidDuration);
+            size = itemView.findViewById(R.id.vidSize);
+            menuBtn = (ImageView) itemView.findViewById(R.id.itemMenu);
+
+        }
+
+        public void setData(String titletext, String time, String siz) {
+            title.setText(titletext);
+            duration.setText(time);
+            size.setText(siz);
+
+        }
+    }
+
     public class EmptyViewHolder extends RecyclerView.ViewHolder {
         public EmptyViewHolder(View itemView) {
             super(itemView);
@@ -264,34 +293,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Viewholder
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         dialog.show();
-    }
-
-    class Viewholder extends RecyclerView.ViewHolder {
-
-        public ImageView menuBtn;
-        private TextView title;
-        private TextView duration;
-        private TextView size;
-        private ImageView vidImage;
-        private LinearLayout lc1;
-
-        public Viewholder(@NonNull View itemView, int i) {
-            super(itemView);
-            lc1 = itemView.findViewById(R.id.lc1);
-            vidImage = itemView.findViewById(R.id.vidImage);
-            title = itemView.findViewById(R.id.vidTitle);
-            duration = itemView.findViewById(R.id.vidDuration);
-            size = itemView.findViewById(R.id.vidSize);
-            menuBtn = (ImageView) itemView.findViewById(R.id.itemMenu);
-
-        }
-
-        public void setData(String titletext, String time, String siz) {
-            title.setText(titletext);
-            duration.setText(time);
-            size.setText(siz);
-
-        }
     }
 
     private void playVid(final int position) {

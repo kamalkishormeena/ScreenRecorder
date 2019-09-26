@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="5dp"
     android:paddingTop="5dp"
@@ -24,6 +24,7 @@
         card_view:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/lc1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/cardbg"
@@ -31,26 +32,27 @@
 
             <ImageView
                 android:id="@+id/vidImage"
-                android:layout_width="0dp"
+                android:layout_width="70dp"
                 android:layout_height="0dp"
                 android:foreground="@color/blackOverlay"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/vidTitle"
-                app:layout_constraintHorizontal_weight="2.2"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/vidTitle"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="65dp"
                 android:text="Title"
                 android:textColor="@color/white"
                 android:textSize="16dp"
-                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintEnd_toStartOf="@+id/itemMenu"
                 app:layout_constraintStart_toEndOf="@+id/vidImage"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,14 +75,13 @@
                 android:id="@+id/vidSize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_weight="1.0"
                 android:text="Size : 100MB"
                 android:textColor="@color/textColor_trans"
                 android:textSize="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/vidDuration"
-                app:layout_constraintTop_toBottomOf="@+id/vidTitle" />
+                app:layout_constraintTop_toTopOf="@+id/vidDuration" />
 
             <ImageView
                 android:id="@+id/itemMenu"

@@ -20,6 +20,7 @@
         card_view:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/lc1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/cardbg"

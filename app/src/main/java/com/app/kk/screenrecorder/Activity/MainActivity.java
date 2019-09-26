@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     long aLong;
     private static final String YES_ACTION = "YES_ACTION";
     private NotificationManager notificationManager;
-    private Toolbar toolbar;
+    public Toolbar toolbar;
 
     //    LinearLayout emptyView;
     ConstraintLayout emptyView;
